@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>gg.drift.client</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0</project_license>
+  <name>Drift Client</name>
+  <summary>Minecraft client launcher with mods, HUD, and performance optimizations</summary>
+  <description>
+    <p>
+      Drift Client is a custom Minecraft client launcher that provides HUD overlays,
+      quality-of-life features, performance optimizations, and mod management.
+    </p>
+  </description>
+  <launchable type="desktop-id">gg.drift.client.desktop</launchable>
+  <url type="homepage">https://drift-client.gg</url>
+  <url type="bugtracker">https://github.com/drift-client/drift-client/issues</url>
+  <provides>
+    <binary>drift-launcher</binary>
+  </provides>
+  <releases>
+    <release version="0.1.0" date="2026-07-31">
+      <description>
+        <p>Initial release with cross-platform launcher, mod management, and HUD support.</p>
+      </description>
+    </release>
+  </releases>
+  <content_rating type="oars-1.1" />
+</component>

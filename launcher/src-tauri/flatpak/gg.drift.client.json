@@ -1,0 +1,52 @@
+{
+  "id": "gg.drift.client",
+  "runtime": "org.gnome.Platform",
+  "runtime-version": "46",
+  "sdk": "org.gnome.Sdk",
+  "command": "drift-launcher",
+  "finish-args": [
+    "--share=network",
+    "--share=ipc",
+    "--socket=fallback-x11",
+    "--socket=wayland",
+    "--device=dri",
+    "--filesystem=home",
+    "--filesystem=~/.minecraft:create"
+  ],
+  "modules": [
+    {
+      "name": "drift-client",
+      "buildsystem": "simple",
+      "build-commands": [
+        "install -Dm755 drift-launcher /app/bin/drift-launcher",
+        "cp -r dist /app/share/drift-client/dist",
+        "install -Dm644 icons/128x128.png /app/share/icons/hicolor/128x128/apps/gg.drift.client.png",
+        "install -Dm644 icons/256x256.png /app/share/icons/hicolor/256x256/apps/gg.drift.client.png",
+        "install -Dm644 gg.drift.client.desktop /app/share/applications/gg.drift.client.desktop",
+        "install -Dm644 gg.drift.client.metainfo.xml /app/share/metainfo/gg.drift.client.metainfo.xml"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "path": "../target/release/bundle/appimage/Drift Client_0.1.0_amd64.AppImage"
+        },
+        {
+          "type": "file",
+          "path": "icons/128x128.png"
+        },
+        {
+          "type": "file",
+          "path": "icons/128x128@2x.png"
+        },
+        {
+          "type": "file",
+          "path": "flatpak/gg.drift.client.desktop"
+        },
+        {
+          "type": "file",
+          "path": "flatpak/gg.drift.client.metainfo.xml"
+        }
+      ]
+    }
+  ]
+}

@@ -15,21 +15,21 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Drift Client — A better way to play Minecraft",
+  title: "Drift Client — Open-source Minecraft client",
   description:
-    "Drift Client is a fast, customizable Minecraft client with built-in performance mods, HUD overlays, and quality-of-life features.",
-  keywords: ["minecraft client", "drift client", "fabric mods", "minecraft launcher", "PvP client"],
+    "Lightweight Minecraft client with Sodium, Lithium, custom HUD, and QoL features. Tauri v2, Rust + React, GPL-3.0.",
+  keywords: ["minecraft client", "drift client", "fabric mods", "minecraft launcher", "open source"],
   authors: [{ name: "Drift Client" }],
   openGraph: {
-    title: "Drift Client — A better way to play Minecraft",
-    description: "Fast, customizable, fair-play Minecraft client with built-in mods and HUD features.",
+    title: "Drift Client — Open-source Minecraft client",
+    description: "Sodium, Lithium, custom HUD, Modrinth integration. ~10MB, no Electron.",
     type: "website",
     siteName: "Drift Client",
   },
   twitter: {
     card: "summary_large_image",
     title: "Drift Client",
-    description: "A better way to play Minecraft.",
+    description: "Open-source Minecraft client. Tauri v2, Rust + React.",
   },
   robots: { index: true, follow: true },
 };

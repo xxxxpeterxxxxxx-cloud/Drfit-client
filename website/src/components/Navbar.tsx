@@ -38,7 +38,7 @@ export function Navbar() {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
-          <Link href="https://github.com/driftclient" target="_blank" className="text-drift-muted hover:text-drift-text transition-colors">
+          <Link href="https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client" target="_blank" className="text-drift-muted hover:text-drift-text transition-colors">
             <Github size={20} />
           </Link>
           <Link href="/download" className="btn-primary text-sm">

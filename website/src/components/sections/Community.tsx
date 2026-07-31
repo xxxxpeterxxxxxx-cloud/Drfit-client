@@ -16,14 +16,14 @@ const communityLinks = [
     title: "GitHub",
     description: "Browse the source code, report bugs, and contribute features.",
     action: "View on GitHub",
-    href: "https://github.com/driftclient",
+    href: "https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client",
   },
   {
     icon: MessageCircle,
     title: "Feature Requests",
     description: "Suggest new features and vote on what we should build next.",
     action: "Submit Request",
-    href: "https://github.com/driftclient/drift-client/issues",
+    href: "https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client/issues",
   },
   {
     icon: Users,

@@ -38,7 +38,7 @@ export default function AboutPage() {
               <p className="text-drift-text-secondary leading-relaxed">
                 Drift Client is licensed under GPL-3.0. The entire codebase — launcher,
                 mods, and website — is available on{" "}
-                <a href="https://github.com/driftclient" className="text-drift-accent hover:underline">GitHub</a>.
+                <a href="https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client" className="text-drift-accent hover:underline">GitHub</a>.
                 We welcome contributions from the community.
               </p>
             </section>

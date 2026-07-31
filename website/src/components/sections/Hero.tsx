@@ -72,7 +72,7 @@ export function Hero() {
             <Download size={20} />
             Download for Free
           </Link>
-          <Link href="https://github.com/driftclient" className="btn-secondary text-base px-8 py-3" target="_blank">
+          <Link href="https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client" className="btn-secondary text-base px-8 py-3" target="_blank">
             <Github size={18} />
             View on GitHub
           </Link>

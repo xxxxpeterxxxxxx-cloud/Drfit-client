@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Github, Discord } from "lucide-react";
+import { Github, MessageSquare } from "lucide-react";
 
 const footerLinks = {
   Resources: [
@@ -39,7 +39,7 @@ export function Footer() {
                 <Github size={20} />
               </Link>
               <Link href="/discord" className="text-drift-muted hover:text-drift-text">
-                <Discord size={20} />
+                <MessageSquare size={20} />
               </Link>
             </div>
           </div>

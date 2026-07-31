@@ -1,11 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Github, Discord, MessageCircle, Users } from "lucide-react";
+import { Github, MessageSquare, MessageCircle, Users } from "lucide-react";
 
 const communityLinks = [
   {
-    icon: Discord,
+    icon: MessageSquare,
     title: "Discord Server",
     description: "Join 500+ members for support, updates, and community events.",
     action: "Join Discord",

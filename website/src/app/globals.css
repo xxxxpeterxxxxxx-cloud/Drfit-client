@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-drift-bg text-drift-text;
+  }
+}
+
+@layer components {
+  .container-max {
+    @apply max-w-7xl mx-auto px-6 lg:px-8;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg font-medium transition-all duration-200;
+  }
+  .btn-primary {
+    @apply btn bg-drift-accent hover:bg-drift-accent-hover text-white shadow-lg shadow-drift-accent/20;
+  }
+  .btn-secondary {
+    @apply btn bg-drift-surface hover:bg-drift-border text-drift-text border border-drift-border;
+  }
+  .card {
+    @apply bg-drift-surface border border-drift-border rounded-2xl;
+  }
+  .text-gradient {
+    @apply bg-gradient-to-r from-drift-accent to-drift-accent-light bg-clip-text text-transparent;
+  }
+}

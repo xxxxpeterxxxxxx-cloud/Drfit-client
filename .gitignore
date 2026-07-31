@@ -1,0 +1,41 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+
+# Rust / Tauri
+target/
+launcher/src-tauri/target/
+
+# Node / Web
+node_modules/
+.next/
+out/
+dist/
+.turbo/
+*.log
+
+# Gradle / Java
+build/
+.gradle/
+*.class
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+run/
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Tauri
+launcher/dist/
+
+# Misc
+*.drift-profile

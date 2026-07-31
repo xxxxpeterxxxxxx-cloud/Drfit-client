@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Drift Client Config",
+  "description": "Shared configuration schema between launcher and in-game mods",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Config schema version"
+    },
+    "profile": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "minecraftVersion": { "type": "string" },
+        "modLoader": { "type": "string", "enum": ["fabric", "legacy-fabric"] },
+        "javaVersion": { "type": "integer", "minimum": 8 }
+      },
+      "required": ["name", "minecraftVersion", "modLoader"]
+    },
+    "modules": {
+      "type": "object",
+      "description": "Feature flags for each Drift module",
+      "properties": {
+        "core": { "type": "boolean", "default": true },
+        "hud": { "type": "boolean", "default": true },
+        "qol": { "type": "boolean", "default": true },
+        "perf": { "type": "boolean", "default": true },
+        "legacy": { "type": "boolean", "default": false }
+      }
+    },
+    "hud": {
+      "type": "object",
+      "description": "HUD element configuration",
+      "properties": {
+        "elements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "enabled": { "type": "boolean" },
+              "x": { "type": "number" },
+              "y": { "type": "number" },
+              "scale": { "type": "number", "minimum": 0.5, "maximum": 3.0, "default": 1.0 }
+            },
+            "required": ["id", "enabled", "x", "y", "scale"]
+          }
+        },
+        "preset": { "type": "string", "enum": ["default", "bedwars", "skyblock", "survival", "custom"] }
+      }
+    },
+    "qol": {
+      "type": "object",
+      "properties": {
+        "toggleSprint": { "type": "boolean", "default": true },
+        "toggleSneak": { "type": "boolean", "default": false },
+        "zoom": { "type": "object", "properties": { "enabled": { "type": "boolean" }, "fov": { "type": "number", "minimum": 10, "maximum": 110 } } },
+        "fullbright": { "type": "boolean", "default": false },
+        "customCrosshair": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "shape": { "type": "string", "enum": ["cross", "dot", "circle", "plus"] },
+            "color": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+            "size": { "type": "integer", "minimum": 1, "maximum": 20 }
+          }
+        },
+        "discordRpc": { "type": "boolean", "default": true }
+      }
+    },
+    "perf": {
+      "type": "object",
+      "properties": {
+        "sodium": { "type": "boolean", "default": true },
+        "lithium": { "type": "boolean", "default": true },
+        "ferriteCore": { "type": "boolean", "default": true },
+        "iris": { "type": "boolean", "default": false },
+        "ramLimit": { "type": "integer", "minimum": 1024, "default": 4096 },
+        "jvmArgs": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  },
+  "required": ["version", "profile", "modules"]
+}

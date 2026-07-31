@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "driftperf",
+  "version": "${version}",
+  "name": "Drift Performance",
+  "description": "Performance integration - Sodium, Lithium, FerriteCore, Iris, JVM tuning",
+  "authors": ["Drift Client"],
+  "contact": { "homepage": "https://drift.gg" },
+  "license": "GPL-3.0",
+  "environment": "*",
+  "depends": {
+    "fabricloader": ">=0.15.0",
+    "fabric-api": "*",
+    "minecraft": "~1.21",
+    "java": ">=21",
+    "driftcore": "*"
+  },
+  "entrypoints": {
+    "main": ["gg.drift.perf.DriftPerf"]
+  }
+}

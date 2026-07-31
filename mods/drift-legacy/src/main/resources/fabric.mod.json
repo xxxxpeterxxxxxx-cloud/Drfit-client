@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "driftlegacy",
+  "version": "${version}",
+  "name": "Drift Legacy",
+  "description": "Legacy support for Minecraft 1.8.9 - rendering overrides, PvP optimizations",
+  "authors": ["Drift Client"],
+  "contact": { "homepage": "https://drift.gg" },
+  "license": "GPL-3.0",
+  "environment": "client",
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.8.9",
+    "java": ">=8",
+    "driftcore": "*"
+  },
+  "entrypoints": {
+    "main": ["gg.drift.legacy.DriftLegacy"]
+  }
+}

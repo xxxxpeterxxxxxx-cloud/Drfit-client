@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "drifthud",
+  "version": "${version}",
+  "name": "Drift HUD",
+  "description": "HUD overlays - FPS, Ping, CPS, Coordinates, Armor, Keystrokes",
+  "authors": ["Drift Client"],
+  "contact": { "homepage": "https://drift.gg" },
+  "license": "GPL-3.0",
+  "environment": "client",
+  "depends": {
+    "fabricloader": ">=0.15.0",
+    "fabric-api": "*",
+    "minecraft": "~1.21",
+    "java": ">=21",
+    "driftcore": "*"
+  },
+  "entrypoints": {
+    "main": ["gg.drift.hud.DriftHUD"]
+  }
+}

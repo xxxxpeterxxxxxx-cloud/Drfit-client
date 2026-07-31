@@ -1,0 +1,20 @@
+{
+  "name": "drift-client-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Drift Client - Modular Minecraft Client",
+  "license": "GPL-3.0",
+  "scripts": {
+    "dev:launcher": "pnpm --filter launcher dev",
+    "dev:website": "pnpm --filter website dev",
+    "build:launcher": "pnpm --filter launcher build",
+    "build:website": "pnpm --filter website build",
+    "build:mods": "cd mods && ./gradlew build",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=9"
+  }
+}

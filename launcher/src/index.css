@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-drift-border;
+  }
+  body {
+    @apply bg-drift-bg text-drift-text font-sans antialiased;
+    user-select: none;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors duration-150;
+  }
+  .btn-primary {
+    @apply btn bg-drift-accent hover:bg-drift-accent-hover text-white;
+  }
+  .btn-ghost {
+    @apply btn hover:bg-drift-surface text-drift-text;
+  }
+  .card {
+    @apply bg-drift-surface border border-drift-border rounded-xl p-4;
+  }
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors duration-150 text-drift-muted hover:text-drift-text hover:bg-drift-surface cursor-pointer;
+  }
+  .nav-item-active {
+    @apply nav-item text-drift-text bg-drift-surface;
+  }
+}

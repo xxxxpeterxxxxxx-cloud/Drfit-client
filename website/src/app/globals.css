@@ -9,6 +9,22 @@
   body {
     @apply bg-drift-bg text-drift-text;
   }
+  ::selection {
+    @apply bg-drift-accent/30 text-drift-text;
+  }
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-drift-bg;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-drift-border rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-drift-border-light;
+  }
 }
 
 @layer components {
@@ -19,15 +35,49 @@
     @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg font-medium transition-all duration-200;
   }
   .btn-primary {
-    @apply btn bg-drift-accent hover:bg-drift-accent-hover text-white shadow-lg shadow-drift-accent/20;
+    @apply btn bg-drift-accent hover:bg-drift-accent-hover text-white shadow-lg shadow-drift-accent/20 hover:shadow-drift-accent/40;
   }
   .btn-secondary {
-    @apply btn bg-drift-surface hover:bg-drift-border text-drift-text border border-drift-border;
+    @apply btn bg-drift-surface hover:bg-drift-surface-hover text-drift-text border border-drift-border hover:border-drift-border-light;
+  }
+  .btn-gold {
+    @apply btn bg-drift-gold hover:bg-drift-gold-light text-drift-bg shadow-lg shadow-drift-gold/20;
   }
   .card {
     @apply bg-drift-surface border border-drift-border rounded-2xl;
   }
+  .card-glass {
+    @apply bg-drift-surface/60 backdrop-blur-xl border border-drift-border/60 rounded-2xl;
+  }
+  .card-glow {
+    @apply card hover:shadow-xl hover:shadow-drift-accent/10 transition-all duration-300;
+  }
   .text-gradient {
     @apply bg-gradient-to-r from-drift-accent to-drift-accent-light bg-clip-text text-transparent;
+  }
+  .text-gradient-gold {
+    @apply bg-gradient-to-r from-drift-gold to-drift-gold-light bg-clip-text text-transparent;
+  }
+  .badge {
+    @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium;
+  }
+  .badge-accent {
+    @apply badge bg-drift-accent/10 text-drift-accent border border-drift-accent/20;
+  }
+  .badge-gold {
+    @apply badge bg-drift-gold/10 text-drift-gold border border-drift-gold/20;
+  }
+  .code-block {
+    @apply bg-drift-bg border border-drift-border rounded-xl p-4 font-mono text-sm text-drift-text-secondary overflow-x-auto;
+  }
+  .nav-link {
+    @apply text-sm text-drift-text-secondary hover:text-drift-text transition-colors relative;
+  }
+  .nav-link::after {
+    content: '';
+    @apply absolute -bottom-1 left-0 w-0 h-0.5 bg-drift-accent transition-all duration-200;
+  }
+  .nav-link:hover::after {
+    @apply w-full;
   }
 }

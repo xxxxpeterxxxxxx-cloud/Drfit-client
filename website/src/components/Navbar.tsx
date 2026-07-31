@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, X, Download } from "lucide-react";
+import { Menu, X, Download, Github } from "lucide-react";
 
 const navLinks = [
   { href: "/#features", label: "Features" },
@@ -19,7 +19,7 @@ export function Navbar() {
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-drift-border/50 bg-drift-bg/80 backdrop-blur-xl">
       <nav className="container-max flex items-center justify-between h-16">
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-drift-accent flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-drift-accent flex items-center justify-center shadow-lg shadow-drift-accent/30">
             <span className="text-white font-bold text-sm">D</span>
           </div>
           <span className="font-semibold text-lg">Drift</span>
@@ -30,7 +30,7 @@ export function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm text-drift-text-secondary hover:text-drift-text transition-colors"
+              className="nav-link"
             >
               {link.label}
             </Link>
@@ -38,6 +38,9 @@ export function Navbar() {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
+          <Link href="https://github.com/driftclient" target="_blank" className="text-drift-muted hover:text-drift-text transition-colors">
+            <Github size={20} />
+          </Link>
           <Link href="/download" className="btn-primary text-sm">
             <Download size={16} />
             Download

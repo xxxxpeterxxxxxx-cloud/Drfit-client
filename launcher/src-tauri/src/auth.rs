@@ -16,7 +16,7 @@ pub struct Account {
 }
 
 #[tauri::command]
-pub async fn login_microsoft(state: State<'_, AuthState>) -> Result<Account, String> {
+pub async fn login_microsoft(_state: State<'_, AuthState>) -> Result<Account, String> {
     // TODO: Implement MSAL OAuth2 flow
     // 1. Open browser to Microsoft login URL
     // 2. Receive auth code via redirect

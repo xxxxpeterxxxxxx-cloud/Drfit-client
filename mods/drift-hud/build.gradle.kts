@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("fabric-loom") version "1.7.0"
+    id("fabric-loom") version "1.7.3"
 }
 
 group = "gg.drift.client"
@@ -16,8 +16,6 @@ dependencies {
     mappings("net.fabricmc:yarn:${yarnMappings}:v2")
     modImplementation("net.fabricmc:fabric-loader:${loaderVersion}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${fabricVersion}")
-
-    // Depend on drift-core
     modImplementation(project(":drift-core"))
 }
 

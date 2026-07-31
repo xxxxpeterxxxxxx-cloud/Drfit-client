@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("fabric-loom") version "1.7.0"
+    id("fabric-loom") version "1.7.3"
 }
 
 group = "gg.drift.client"

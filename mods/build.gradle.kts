@@ -25,3 +25,8 @@ subprojects {
         options.encoding = "UTF-8"
     }
 }
+
+// Ensure drift-core is built before dependent projects try to read its JAR
+project(":drift-hud").evaluationDependsOn(":drift-core")
+project(":drift-qol").evaluationDependsOn(":drift-core")
+project(":drift-perf").evaluationDependsOn(":drift-core")

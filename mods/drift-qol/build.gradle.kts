@@ -1,7 +1,7 @@
 plugins {
     id("java")
-    id("fabric-loom") version "1.7.0"
-    id("org.jetbrains.kotlin.jvm") version "2.0.0"
+    id("fabric-loom") version "1.7.3"
+    // id("org.jetbrains.kotlin.jvm") version "2.0.0" // TODO: Re-enable after Loom classloader fix
 }
 
 group = "gg.drift.client"
@@ -18,7 +18,6 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:${loaderVersion}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${fabricVersion}")
     modImplementation("net.fabricmc:fabric-language-kotlin:1.11.0+kotlin.2.0.0")
-
     modImplementation(project(":drift-core"))
 }
 

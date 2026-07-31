@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("fabric-loom") version "1.7.0"
+    id("fabric-loom") version "1.7.3"
 }
 
 group = "gg.drift.client"
@@ -16,8 +16,7 @@ dependencies {
     minecraft("com.mojang:minecraft:${minecraftVersion}")
     mappings("net.fabricmc:yarn:${yarnMappings}:v2")
     modImplementation("net.fabricmc:fabric-loader:${loaderVersion}")
-    modImplementation("net.fabricmc.legacy-fabric-api:fabric-api:${fabricVersion}")
-    modImplementation(project(":drift-core"))
+    modImplementation("net.fabricmc.legacy-fabric-api:legacy-fabric-api:${fabricVersion}")
 }
 
 tasks.processResources {

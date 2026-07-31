@@ -72,8 +72,8 @@ drift-client/
 
 ```bash
 # Clone
-git clone https://github.com/driftclient/drift-client.git
-cd drift-client
+git clone https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client.git
+cd Drfit-client
 
 # Install web dependencies
 pnpm install
@@ -96,7 +96,7 @@ Drift Core provides three main services:
 - **ConfigManager** — Read and write JSON configs
 - **EventBus** — Publish and subscribe to custom events
 
-See the [Mod Development Guide](https://drift.gg/docs/mods) for full documentation.
+See the [Mod Development Guide](https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client/tree/main/docs) for full documentation.
 
 ## Fair Play Policy
 

@@ -1,0 +1,138 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag (e.g. v0.1.0-alpha)"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.tag || github.ref_name }}
+          name: Drift Client ${{ github.event.inputs.tag || github.ref_name }}
+          body: |
+            # Drift Client ${{ github.event.inputs.tag || github.ref_name }}
+
+            ## What's New
+            - Tauri v2 launcher with React frontend
+            - Rust backend: Microsoft auth, Minecraft launch, Fabric install, Modrinth integration
+            - Frontend connected to backend via typed API layer
+            - Website with build-from-source instructions
+
+            ## Build from Source
+            ```bash
+            git clone https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client.git
+            cd Drfit-client/launcher
+            npm install
+            npm run tauri build
+            ```
+
+            ## Platform Builds
+            Prebuilt binaries are attached below (if CI built successfully).
+            If no binaries are attached, build from source using the instructions above.
+
+            ---
+            **License:** GPL-3.0 | **Requirements:** Java 21+, Minecraft account
+          draft: true
+          prerelease: true
+
+  build-launcher:
+    needs: create-release
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            label: linux
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            label: windows
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            label: macos-arm
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            label: macos-intel
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: launcher/pnpm-lock.yaml
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: launcher/src-tauri
+
+      - name: Install Linux dependencies
+        if: matrix.label == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev patchelf
+
+      - run: pnpm install --frozen-lockfile
+        working-directory: launcher
+
+      - name: Build Tauri app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.event.inputs.tag || github.ref_name }}
+          releaseName: "Drift Client ${{ github.event.inputs.tag || github.ref_name }}"
+          args: --target ${{ matrix.target }}
+
+  build-mods:
+    needs: create-release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Build mods
+        run: ./gradlew build --no-daemon
+        working-directory: mods
+
+      - name: Upload mod JARs to release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.tag || github.ref_name }}
+          files: mods/*/build/libs/*.jar

@@ -1,6 +1,7 @@
 # OS
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # IDE
 .idea/
@@ -8,10 +9,12 @@ Thumbs.db
 *.iml
 *.swp
 *.swo
+*.bak
 
 # Rust / Tauri
 target/
 launcher/src-tauri/target/
+launcher/src-tauri/gen/
 
 # Node / Web
 node_modules/
@@ -20,6 +23,7 @@ out/
 dist/
 .turbo/
 *.log
+.vercel/
 
 # Gradle / Java
 build/
@@ -39,3 +43,5 @@ launcher/dist/
 
 # Misc
 *.drift-profile
+*.lock~
+.pnpm-store/

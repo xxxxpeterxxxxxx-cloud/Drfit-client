@@ -10,8 +10,12 @@
     "build:launcher": "pnpm --filter launcher build",
     "build:website": "pnpm --filter website build",
     "build:mods": "cd mods && ./gradlew build",
+    "build:all": "pnpm build:website && pnpm build:launcher && pnpm build:mods",
     "lint": "pnpm -r lint",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "clean": "rm -rf launcher/dist launcher/src-tauri/target website/.next website/out mods/*/build",
+    "release:tag": "git tag -a v$(node -p \"require('./package.json').version\") -m \"Release v$(node -p \"require('./package.json').version\")\" && git push origin v$(node -p \"require('./package.json').version\")"
   },
   "engines": {
     "node": ">=20",

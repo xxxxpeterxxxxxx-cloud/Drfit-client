@@ -1,8 +1,19 @@
+import { useEffect } from "react";
 import { useLaunchStore } from "../store/launchStore";
-import { Play, Zap, Activity, Settings, ChevronRight, Clock, Package, Cpu } from "lucide-react";
+import { Play, Zap, Activity, Settings, ChevronRight, Clock, Package, Cpu, AlertCircle } from "lucide-react";
 
 export default function HomePage() {
-  const { isLaunching, progress, status } = useLaunchStore();
+  const { isLaunching, progress, status, activeProfile, activeAccount, error, loadProfiles, loadAccounts, launch } = useLaunchStore();
+
+  useEffect(() => {
+    loadProfiles();
+    loadAccounts();
+  }, [loadProfiles, loadAccounts]);
+
+  const profileName = activeProfile ? activeProfile.name : "No profile";
+  const mcVersion = activeProfile ? activeProfile.minecraft_version : "—";
+  const loader = activeProfile ? activeProfile.mod_loader : "—";
+  const accountName = activeAccount ? activeAccount.username : "Not logged in";
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -11,21 +22,34 @@ export default function HomePage() {
         <p className="text-drift-muted text-sm mt-1">Everything you need. Nothing you don't.</p>
       </div>
 
+      {error && (
+        <div className="card p-4 border-red-500/30 bg-red-500/5 flex items-center gap-3">
+          <AlertCircle size={18} className="text-red-500 flex-shrink-0" />
+          <p className="text-sm text-red-500">{error}</p>
+        </div>
+      )}
+
       <div className="card p-6 flex items-center justify-between hover:border-drift-accent/30 transition-colors">
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-drift-accent/20 to-drift-accent/5 flex items-center justify-center border border-drift-accent/20">
             <Play size={28} className="text-drift-accent" fill="currentColor" />
           </div>
           <div>
-            <p className="font-semibold text-lg">Quick Launch</p>
-            <p className="text-sm text-drift-muted">Drift 1.21.x — Fabric</p>
+            <p className="font-semibold text-lg">{profileName}</p>
+            <p className="text-sm text-drift-muted">{mcVersion} — {loader}</p>
             <div className="flex items-center gap-2 mt-1">
-              <span className="text-xs px-2 py-0.5 rounded-full bg-green-500/10 text-green-500">Ready</span>
-              <span className="text-xs text-drift-muted">Java 21</span>
+              <span className={`text-xs px-2 py-0.5 rounded-full ${activeAccount ? "bg-green-500/10 text-green-500" : "bg-yellow-500/10 text-yellow-500"}`}>
+                {activeAccount ? "Ready" : "Login required"}
+              </span>
+              <span className="text-xs text-drift-muted">{accountName}</span>
             </div>
           </div>
         </div>
-        <button className="btn-primary text-lg px-8 py-3" disabled={isLaunching}>
+        <button
+          className="btn-primary text-lg px-8 py-3"
+          disabled={isLaunching || !activeProfile || !activeAccount}
+          onClick={() => launch()}
+        >
           {isLaunching ? `Launching... ${progress}%` : "Play"}
         </button>
       </div>
@@ -46,9 +70,9 @@ export default function HomePage() {
       )}
 
       <div className="grid grid-cols-3 gap-4">
-        <StatCard icon={Cpu} label="Active Profile" value="1.21.x" sublabel="Fabric 0.15" />
-        <StatCard icon={Package} label="Mods Installed" value="0" sublabel="Browse mods" />
-        <StatCard icon={Clock} label="Playtime" value="0h" sublabel="This week" />
+        <StatCard icon={Cpu} label="Active Profile" value={mcVersion} sublabel={loader} />
+        <StatCard icon={Package} label="Mods Installed" value="—" sublabel="Browse mods" />
+        <StatCard icon={Clock} label="Account" value={accountName} sublabel={activeAccount ? "Logged in" : "Not logged in"} />
       </div>
 
       <div className="card p-6">

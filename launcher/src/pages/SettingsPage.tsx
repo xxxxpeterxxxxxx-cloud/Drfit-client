@@ -1,4 +1,4 @@
-import { Settings, Cpu, MemoryStick, Palette, Folder, Info } from "lucide-react";
+import { Cpu, MemoryStick, Palette, Folder, Info } from "lucide-react";
 
 export default function SettingsPage() {
   return (

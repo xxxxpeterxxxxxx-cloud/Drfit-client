@@ -6,6 +6,7 @@ import { Showcase } from "@/components/sections/Showcase";
 import { Comparison } from "@/components/sections/Comparison";
 import { FAQ } from "@/components/sections/FAQ";
 import { CTA } from "@/components/sections/CTA";
+import { Community } from "@/components/sections/Community";
 
 export default function HomePage() {
   return (
@@ -16,6 +17,7 @@ export default function HomePage() {
         <Features />
         <Showcase />
         <Comparison />
+        <Community />
         <FAQ />
         <CTA />
       </main>

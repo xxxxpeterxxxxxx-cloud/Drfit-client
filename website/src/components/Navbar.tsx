@@ -8,7 +8,8 @@ const navLinks = [
   { href: "/#features", label: "Features" },
   { href: "/docs", label: "Docs" },
   { href: "/changelog", label: "Changelog" },
-  { href: "/#community", label: "Community" },
+  { href: "/community", label: "Community" },
+  { href: "/about", label: "About" },
 ];
 
 export function Navbar() {

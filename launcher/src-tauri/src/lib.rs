@@ -16,8 +16,8 @@ pub fn run() {
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
-        .manage(auth::AuthState::default())
-        .manage(profile::ProfileState::default())
+        .manage(auth::init_state())
+        .manage(profile::init_state())
         .invoke_handler(tauri::generate_handler![
             auth::login_microsoft,
             auth::get_accounts,

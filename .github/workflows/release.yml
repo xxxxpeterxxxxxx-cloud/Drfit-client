@@ -177,8 +177,8 @@ jobs:
 
       - name: Build Flatpak
         run: |
-          flatpak-builder --user --force-clean build-dir gg.drift.client.json
-          flatpak build-bundle ~/.local/share/flatpak/repo Drift.Client_0.1.0_x86_64.flatpak gg.drift.client
+          flatpak-builder --user --force-clean --repo=repo build-dir gg.drift.client.json
+          flatpak build-bundle repo Drift.Client_0.1.0_x86_64.flatpak gg.drift.client
         working-directory: flatpak
 
       - name: Upload Flatpak to release

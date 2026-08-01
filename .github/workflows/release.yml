@@ -32,13 +32,25 @@ jobs:
           body: |
             # Drift Client ${{ github.event.inputs.tag || github.ref_name }}
 
-            ## What's New
-            - Tauri v2 launcher with React frontend
-            - Rust backend: Microsoft auth, Minecraft launch, Fabric install, Modrinth integration
-            - Frontend connected to backend via typed API layer
-            - Website with build-from-source instructions
+            ## Install
 
-            ## Build from Source
+            ### Linux (DEB)
+            ```bash
+            curl -L https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client/releases/download/${{ github.event.inputs.tag || github.ref_name }}/Drift.Client_0.1.0_amd64.deb -o drift-client.deb
+            sudo dpkg -i drift-client.deb
+            drift-client
+            ```
+
+            ### Linux (RPM)
+            ```bash
+            curl -L https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client/releases/download/${{ github.event.inputs.tag || github.ref_name }}/Drift.Client-0.1.0-1.x86_64.rpm -o drift-client.rpm
+            sudo rpm -i drift-client.rpm
+            drift-client
+            ```
+
+            ### Windows
+            Download the .exe installer from the assets below.
+            If no .exe is attached, build from source:
             ```bash
             git clone https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client.git
             cd Drfit-client/launcher
@@ -46,13 +58,24 @@ jobs:
             npm run tauri build
             ```
 
-            ## Platform Builds
-            Prebuilt binaries are attached below (if CI built successfully).
-            If no binaries are attached, build from source using the instructions above.
+            ### macOS
+            Download the .dmg from the assets below.
+            If no .dmg is attached, build from source:
+            ```bash
+            git clone https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client.git
+            cd Drfit-client/launcher
+            npm install
+            npm run tauri build
+            ```
+
+            ## What's New
+            - Tauri v2 launcher with React frontend
+            - Rust backend: Microsoft auth, Minecraft launch, Fabric install, Modrinth integration
+            - 5 Fabric mods: core, hud, qol, perf, legacy (1.8.9)
 
             ---
             **License:** GPL-3.0 | **Requirements:** Java 21+, Minecraft account
-          draft: true
+          draft: false
           prerelease: true
 
   build-launcher:

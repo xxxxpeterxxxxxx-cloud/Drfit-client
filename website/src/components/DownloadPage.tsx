@@ -1,48 +1,57 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, Check, Github } from "lucide-react";
+import { Copy, Check, Github, Download } from "lucide-react";
 
-type Platform = "windows" | "macos" | "linux";
+type Platform = "linux" | "windows" | "macos";
+
+const RELEASE_URL = "https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client/releases/tag/v0.1.0-alpha";
+const DEB_URL = "https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client/releases/download/v0.1.0-alpha/Drift.Client_0.1.0_amd64.deb";
+const RPM_URL = "https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client/releases/download/v0.1.0-alpha/Drift.Client-0.1.0-1.x86_64.rpm";
 
 const platformData: Record<Platform, {
   name: string;
-  prereqs: string[];
-  buildSteps: string[];
+  badge: string;
+  badgeColor: string;
+  installSteps: { cmd: string; comment?: string }[];
+  note?: string;
 }> = {
+  linux: {
+    name: "Linux",
+    badge: "DEB + RPM available",
+    badgeColor: "text-emerald-400",
+    installSteps: [
+      { cmd: `curl -L ${DEB_URL} -o drift-client.deb`, comment: "Download DEB (Ubuntu/Debian)" },
+      { cmd: "sudo dpkg -i drift-client.deb", comment: "Install" },
+      { cmd: "drift-client", comment: "Launch" },
+    ],
+    note: "For Fedora/RHEL/CentOS, use the RPM instead: curl -L " + RPM_URL + " -o drift-client.rpm && sudo rpm -i drift-client.rpm",
+  },
   windows: {
     name: "Windows",
-    prereqs: ["Node.js 20+", "Rust (rustup)", "Visual Studio C++ Build Tools", "Git"],
-    buildSteps: [
-      "git clone https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client.git",
-      "cd Drfit-client/launcher",
-      "npm install",
-      "npm run tauri build",
-      "# Installer: src-tauri/target/release/bundle/nsis/",
+    badge: "Build from source",
+    badgeColor: "text-amber-400",
+    installSteps: [
+      { cmd: "git clone https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client.git", comment: "Clone repo" },
+      { cmd: "cd Drfit-client/launcher", comment: "" },
+      { cmd: "npm install", comment: "Install dependencies" },
+      { cmd: "npm run tauri build", comment: "Build (produces NSIS installer)" },
+      { cmd: "# Installer: src-tauri/target/release/bundle/nsis/", comment: "" },
     ],
+    note: "Windows .exe installer will be auto-built by CI on the next release. For now, build from source — requires Node.js 20+, Rust, and VS C++ Build Tools.",
   },
   macos: {
     name: "macOS",
-    prereqs: ["Node.js 20+", "Rust (rustup)", "Xcode Command Line Tools", "Git"],
-    buildSteps: [
-      "git clone https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client.git",
-      "cd Drfit-client/launcher",
-      "npm install",
-      "npm run tauri build",
-      "# DMG: src-tauri/target/release/bundle/dmg/",
+    badge: "Build from source",
+    badgeColor: "text-amber-400",
+    installSteps: [
+      { cmd: "git clone https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client.git", comment: "Clone repo" },
+      { cmd: "cd Drfit-client/launcher", comment: "" },
+      { cmd: "npm install", comment: "Install dependencies" },
+      { cmd: "npm run tauri build", comment: "Build (produces .app + DMG)" },
+      { cmd: "# DMG: src-tauri/target/release/bundle/dmg/", comment: "" },
     ],
-  },
-  linux: {
-    name: "Linux",
-    prereqs: ["Node.js 20+", "Rust (rustup)", "webkit2gtk-4.1, libgtk-3, libayatana-appindicator3", "Git"],
-    buildSteps: [
-      "sudo apt install libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev",
-      "git clone https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client.git",
-      "cd Drfit-client/launcher",
-      "npm install",
-      "npm run tauri build",
-      "# Output: src-tauri/target/release/bundle/",
-    ],
+    note: "macOS .dmg will be auto-built by CI on the next release. For now, build from source — requires Node.js 20+, Rust, and Xcode Command Line Tools.",
   },
 };
 
@@ -83,19 +92,18 @@ export function DownloadPage() {
     <section className="pt-24 pb-20 min-h-screen">
       <div className="container-max max-w-3xl">
         <div className="mb-12">
-          <h1 className="text-3xl font-bold mb-3">Build from source</h1>
+          <h1 className="text-3xl font-bold mb-3">Download</h1>
           <p className="text-sm text-drift-text-secondary">
-            No prebuilt binaries yet — the project is in early alpha.
-            Build it yourself, it takes 5 minutes.
+            v0.1.0-alpha — early access. Linux packages ready, Windows/macOS coming via CI.
           </p>
           <a
-            href="https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client"
+            href={RELEASE_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 mt-3 text-sm text-drift-accent hover:underline"
           >
             <Github size={14} />
-            github.com/xxxxpeterxxxxxx-cloud/Drfit-client
+            GitHub Releases
           </a>
         </div>
 
@@ -116,55 +124,82 @@ export function DownloadPage() {
           ))}
         </div>
 
-        {/* Prerequisites */}
-        <div className="mb-8">
-          <h2 className="text-xs font-semibold text-drift-muted uppercase tracking-wider mb-3 font-mono">
-            Prerequisites
-          </h2>
-          <ul className="space-y-1.5">
-            {platform.prereqs.map((req) => (
-              <li key={req} className="text-sm text-drift-text-secondary flex items-start gap-2">
-                <span className="text-drift-muted mt-0.5">—</span>
-                {req}
-              </li>
-            ))}
-          </ul>
+        {/* Status badge */}
+        <div className="mb-6">
+          <span className={`text-xs font-mono ${platform.badgeColor}`}>
+            ● {platform.badge}
+          </span>
         </div>
 
-        {/* Build steps */}
+        {/* Install steps */}
         <div>
           <h2 className="text-xs font-semibold text-drift-muted uppercase tracking-wider mb-3 font-mono">
-            Build
+            Install
           </h2>
           <div className="rounded-lg border border-drift-border overflow-hidden">
-            {platform.buildSteps.map((cmd, i) => {
-              const isComment = cmd.startsWith("#");
+            {platform.installSteps.map((step, i) => {
+              const isComment = step.cmd.startsWith("#");
               return (
-                <div
-                  key={i}
-                  className={`flex items-center gap-3 px-4 py-2.5 ${
-                    isComment ? "bg-drift-bg-secondary" : "bg-drift-bg border-t border-drift-border first:border-t-0"
-                  }`}
-                >
-                  {!isComment && (
-                    <span className="text-xs text-drift-muted font-mono w-4 flex-shrink-0">$</span>
+                <div key={i}>
+                  {step.comment && !isComment && (
+                    <div className="px-4 pt-3 pb-1 text-xs text-drift-muted font-mono bg-drift-bg-secondary border-t border-drift-border first:border-t-0">
+                      {step.comment}
+                    </div>
                   )}
-                  <code
-                    className={`text-sm font-mono break-all flex-1 ${
-                      isComment ? "text-drift-muted" : "text-drift-text-secondary"
+                  <div
+                    className={`flex items-center gap-3 px-4 py-2.5 ${
+                      isComment ? "bg-drift-bg-secondary" : "bg-drift-bg border-t border-drift-border first:border-t-0"
                     }`}
                   >
-                    {cmd}
-                  </code>
-                  {!isComment && <CopyButton text={cmd} />}
+                    {!isComment && (
+                      <span className="text-xs text-drift-muted font-mono w-4 flex-shrink-0">$</span>
+                    )}
+                    <code
+                      className={`text-sm font-mono break-all flex-1 ${
+                        isComment ? "text-drift-muted" : "text-drift-text-secondary"
+                      }`}
+                    >
+                      {step.cmd}
+                    </code>
+                    {!isComment && <CopyButton text={step.cmd} />}
+                  </div>
                 </div>
               );
             })}
           </div>
         </div>
 
+        {/* Note */}
+        {platform.note && (
+          <div className="mt-4 p-4 rounded-lg bg-drift-bg-secondary border border-drift-border">
+            <p className="text-xs text-drift-muted font-mono leading-relaxed">
+              {platform.note}
+            </p>
+          </div>
+        )}
+
+        {/* Direct download links for Linux */}
+        {activePlatform === "linux" && (
+          <div className="mt-6 flex gap-3">
+            <a
+              href={DEB_URL}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-drift-accent text-white text-sm font-medium hover:opacity-90 transition-opacity"
+            >
+              <Download size={14} />
+              Download .deb
+            </a>
+            <a
+              href={RPM_URL}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-drift-border text-sm font-medium hover:border-drift-accent transition-colors"
+            >
+              <Download size={14} />
+              Download .rpm
+            </a>
+          </div>
+        )}
+
         <div className="mt-8 pt-6 border-t border-drift-border text-xs text-drift-muted font-mono">
-          <p>Requires: Java 21+ (for mods) · Minecraft account · ~2GB disk for build</p>
+          <p>Requires: Java 21+ (for mods) · Minecraft account</p>
           <p className="mt-1">License: GPL-3.0 · Not affiliated with Minecraft/Mojang</p>
         </div>
       </div>

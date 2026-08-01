@@ -6,9 +6,14 @@ import { Copy, Check, Github, Download } from "lucide-react";
 type Platform = "linux" | "windows" | "macos";
 
 const RELEASE_URL = "https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client/releases/tag/v0.1.0-alpha";
-const DEB_URL = "https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client/releases/download/v0.1.0-alpha/Drift.Client_0.1.0_amd64.deb";
-const RPM_URL = "https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client/releases/download/v0.1.0-alpha/Drift.Client-0.1.0-1.x86_64.rpm";
-const FLATPAK_URL = "https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client/releases/download/v0.1.0-alpha/Drift.Client_0.1.0_x86_64.flatpak";
+const BASE = "https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client/releases/download/v0.1.0-alpha";
+const DEB_URL = `${BASE}/Drift.Client_0.1.0_amd64.deb`;
+const RPM_URL = `${BASE}/Drift.Client-0.1.0-1.x86_64.rpm`;
+const FLATPAK_URL = `${BASE}/Drift.Client_0.1.0_x86_64.flatpak`;
+const EXE_URL = `${BASE}/Drift.Client_0.1.0_x64-setup.exe`;
+const MSI_URL = `${BASE}/Drift.Client_0.1.0_x64_en-US.msi`;
+const DMG_ARM_URL = `${BASE}/Drift.Client_0.1.0_aarch64.dmg`;
+const DMG_INTEL_URL = `${BASE}/Drift.Client_0.1.0_x64.dmg`;
 
 const platformData: Record<Platform, {
   name: string;
@@ -16,6 +21,7 @@ const platformData: Record<Platform, {
   badgeColor: string;
   installSteps: { cmd: string; comment?: string }[];
   note?: string;
+  downloads: { label: string; url: string; primary?: boolean }[];
 }> = {
   linux: {
     name: "Linux",
@@ -30,32 +36,39 @@ const platformData: Record<Platform, {
       { cmd: "flatpak run gg.drift.client", comment: "Launch" },
     ],
     note: "Option 3 — RPM (Fedora/RHEL): curl -L " + RPM_URL + " -o drift-client.rpm && sudo rpm -i drift-client.rpm  |  All packages create an application menu entry automatically.",
+    downloads: [
+      { label: ".deb", url: DEB_URL, primary: true },
+      { label: ".rpm", url: RPM_URL },
+      { label: ".flatpak", url: FLATPAK_URL },
+    ],
   },
   windows: {
     name: "Windows",
-    badge: "Build from source",
-    badgeColor: "text-amber-400",
+    badge: "EXE + MSI available",
+    badgeColor: "text-emerald-400",
     installSteps: [
-      { cmd: "git clone https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client.git", comment: "Clone repo" },
-      { cmd: "cd Drfit-client/launcher", comment: "" },
-      { cmd: "npm install", comment: "Install dependencies" },
-      { cmd: "npm run tauri build", comment: "Build (produces NSIS installer)" },
-      { cmd: "# Installer: src-tauri/target/release/bundle/nsis/", comment: "" },
+      { cmd: `curl -L ${EXE_URL} -o DriftClient-setup.exe`, comment: "Download NSIS installer" },
+      { cmd: "DriftClient-setup.exe", comment: "Run installer — creates Start Menu shortcut automatically" },
     ],
-    note: "Windows .exe installer will be auto-built by CI on the next release. For now, build from source — requires Node.js 20+, Rust, and VS C++ Build Tools.",
+    note: "Alternatively, download the .msi installer for enterprise deployment. Both installers work on Windows 10/11 x64.",
+    downloads: [
+      { label: ".exe (NSIS)", url: EXE_URL, primary: true },
+      { label: ".msi", url: MSI_URL },
+    ],
   },
   macos: {
     name: "macOS",
-    badge: "Build from source",
-    badgeColor: "text-amber-400",
+    badge: "DMG available (Intel + ARM)",
+    badgeColor: "text-emerald-400",
     installSteps: [
-      { cmd: "git clone https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client.git", comment: "Clone repo" },
-      { cmd: "cd Drfit-client/launcher", comment: "" },
-      { cmd: "npm install", comment: "Install dependencies" },
-      { cmd: "npm run tauri build", comment: "Build (produces .app + DMG)" },
-      { cmd: "# DMG: src-tauri/target/release/bundle/dmg/", comment: "" },
+      { cmd: `curl -L ${DMG_ARM_URL} -o DriftClient.dmg`, comment: "Download DMG (Apple Silicon)" },
+      { cmd: "open DriftClient.dmg", comment: "Open and drag to Applications" },
     ],
-    note: "macOS .dmg will be auto-built by CI on the next release. For now, build from source — requires Node.js 20+, Rust, and Xcode Command Line Tools.",
+    note: "Intel Mac? Use this instead: curl -L " + DMG_INTEL_URL + " -o DriftClient.dmg  |  macOS automatically creates a Launchpad entry when you drag to Applications.",
+    downloads: [
+      { label: ".dmg (Apple Silicon)", url: DMG_ARM_URL, primary: true },
+      { label: ".dmg (Intel)", url: DMG_INTEL_URL },
+    ],
   },
 };
 
@@ -98,7 +111,7 @@ export function DownloadPage() {
         <div className="mb-12">
           <h1 className="text-3xl font-bold mb-3">Download</h1>
           <p className="text-sm text-drift-text-secondary">
-            v0.1.0-alpha — early access. Linux packages ready, Windows/macOS coming via CI.
+            v0.1.0-alpha — early access. All platforms available.
           </p>
           <a
             href={RELEASE_URL}
@@ -182,32 +195,23 @@ export function DownloadPage() {
           </div>
         )}
 
-        {/* Direct download links for Linux */}
-        {activePlatform === "linux" && (
-          <div className="mt-6 flex flex-wrap gap-3">
+        {/* Direct download buttons */}
+        <div className="mt-6 flex flex-wrap gap-3">
+          {platform.downloads.map((dl) => (
             <a
-              href={DEB_URL}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-drift-accent text-white text-sm font-medium hover:opacity-90 transition-opacity"
+              key={dl.label}
+              href={dl.url}
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                dl.primary
+                  ? "bg-drift-accent text-white hover:opacity-90"
+                  : "border border-drift-border hover:border-drift-accent"
+              }`}
             >
               <Download size={14} />
-              Download .deb
+              {dl.label}
             </a>
-            <a
-              href={RPM_URL}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-drift-border text-sm font-medium hover:border-drift-accent transition-colors"
-            >
-              <Download size={14} />
-              Download .rpm
-            </a>
-            <a
-              href={FLATPAK_URL}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-drift-border text-sm font-medium hover:border-drift-accent transition-colors"
-            >
-              <Download size={14} />
-              Download .flatpak
-            </a>
-          </div>
-        )}
+          ))}
+        </div>
 
         <div className="mt-8 pt-6 border-t border-drift-border text-xs text-drift-muted font-mono">
           <p>Requires: Java 21+ (for mods) · Minecraft account</p>

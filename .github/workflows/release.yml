@@ -201,8 +201,12 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Build mods
-        run: ./gradlew build --no-daemon
+      - name: Build drift-core
+        run: ./gradlew :drift-core:remapJar --no-daemon
+        working-directory: mods
+
+      - name: Build remaining mods
+        run: ./gradlew :drift-hud:build :drift-qol:build :drift-perf:build :drift-legacy:build --no-daemon
         working-directory: mods
 
       - name: Upload mod JARs to release

@@ -16,7 +16,7 @@ dependencies {
     mappings("net.fabricmc:yarn:${yarnMappings}:v2")
     modImplementation("net.fabricmc:fabric-loader:${loaderVersion}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${fabricVersion}")
-    modCompileOnlyApi(project(":drift-core"))
+    compileOnly(files("../drift-core/build/libs/drift-core-0.1.0.jar"))
 }
 
 tasks.processResources {

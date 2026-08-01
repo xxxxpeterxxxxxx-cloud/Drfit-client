@@ -202,7 +202,9 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
 
       - name: Build mods
-        run: ./gradlew build --no-daemon
+        run: |
+          ./gradlew :drift-core:build --no-daemon
+          ./gradlew build --no-daemon
         working-directory: mods
 
       - name: Upload mod JARs to release

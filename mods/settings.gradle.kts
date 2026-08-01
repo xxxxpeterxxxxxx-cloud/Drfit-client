@@ -20,4 +20,4 @@ include("drift-core")
 include("drift-hud")
 include("drift-qol")
 include("drift-perf")
-// include("drift-legacy") // TODO: Fix Legacy Fabric 1.8.9 mappings
+include("drift-legacy")

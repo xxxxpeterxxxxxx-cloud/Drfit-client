@@ -18,7 +18,7 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:${loaderVersion}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${fabricVersion}")
     modImplementation("net.fabricmc:fabric-language-kotlin:1.11.0+kotlin.2.0.0")
-    modImplementation(project(":drift-core"))
+    modCompileOnlyApi(project(":drift-core"))
 }
 
 tasks.processResources {

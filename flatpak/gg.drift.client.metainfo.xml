@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>gg.drift.client</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0</project_license>
+  <name>Drift Client</name>
+  <summary>Open-source Minecraft client</summary>
+  <description>
+    <p>Lightweight Minecraft client with Sodium, Lithium, custom HUD, and QoL features. Built with Tauri v2, Rust + React.</p>
+  </description>
+  <launchable type="desktop-id">gg.drift.client.desktop</launchable>
+  <url type="homepage">https://drift-client-six.vercel.app</url>
+  <url type="bugtracker">https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client/issues</url>
+  <provides>
+    <binary>drift-launcher</binary>
+  </provides>
+  <releases>
+    <release version="0.1.0" date="2026-08-01">
+      <description>
+        <p>Initial alpha release.</p>
+      </description>
+    </release>
+  </releases>
+  <content_rating type="oars-1.1" />
+</component>

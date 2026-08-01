@@ -56,7 +56,10 @@
       "appimage": {
         "bundleMediaFramework": true
       }
-    }
+    },
+    "category": "Game",
+    "shortDescription": "Open-source Minecraft client",
+    "longDescription": "Lightweight Minecraft client with Sodium, Lithium, custom HUD, and QoL features. Tauri v2, Rust + React."
   },
   "plugins": {}
 }

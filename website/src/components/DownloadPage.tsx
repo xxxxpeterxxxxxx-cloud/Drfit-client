@@ -8,6 +8,7 @@ type Platform = "linux" | "windows" | "macos";
 const RELEASE_URL = "https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client/releases/tag/v0.1.0-alpha";
 const DEB_URL = "https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client/releases/download/v0.1.0-alpha/Drift.Client_0.1.0_amd64.deb";
 const RPM_URL = "https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client/releases/download/v0.1.0-alpha/Drift.Client-0.1.0-1.x86_64.rpm";
+const FLATPAK_URL = "https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client/releases/download/v0.1.0-alpha/Drift.Client_0.1.0_x86_64.flatpak";
 
 const platformData: Record<Platform, {
   name: string;
@@ -18,14 +19,17 @@ const platformData: Record<Platform, {
 }> = {
   linux: {
     name: "Linux",
-    badge: "DEB + RPM available",
+    badge: "DEB + RPM + Flatpak available",
     badgeColor: "text-emerald-400",
     installSteps: [
-      { cmd: `curl -L ${DEB_URL} -o drift-client.deb`, comment: "Download DEB (Ubuntu/Debian)" },
-      { cmd: "sudo dpkg -i drift-client.deb", comment: "Install" },
-      { cmd: "drift-client", comment: "Launch" },
+      { cmd: `curl -L ${DEB_URL} -o drift-client.deb`, comment: "Option 1: DEB (Ubuntu/Debian)" },
+      { cmd: "sudo dpkg -i drift-client.deb", comment: "Install — creates menu shortcut automatically" },
+      { cmd: "", comment: "" },
+      { cmd: `curl -L ${FLATPAK_URL} -o drift-client.flatpak`, comment: "Option 2: Flatpak (any distro)" },
+      { cmd: "flatpak install drift-client.flatpak", comment: "Install — creates menu shortcut automatically" },
+      { cmd: "flatpak run gg.drift.client", comment: "Launch" },
     ],
-    note: "For Fedora/RHEL/CentOS, use the RPM instead: curl -L " + RPM_URL + " -o drift-client.rpm && sudo rpm -i drift-client.rpm",
+    note: "Option 3 — RPM (Fedora/RHEL): curl -L " + RPM_URL + " -o drift-client.rpm && sudo rpm -i drift-client.rpm  |  All packages create an application menu entry automatically.",
   },
   windows: {
     name: "Windows",
@@ -180,7 +184,7 @@ export function DownloadPage() {
 
         {/* Direct download links for Linux */}
         {activePlatform === "linux" && (
-          <div className="mt-6 flex gap-3">
+          <div className="mt-6 flex flex-wrap gap-3">
             <a
               href={DEB_URL}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-drift-accent text-white text-sm font-medium hover:opacity-90 transition-opacity"
@@ -194,6 +198,13 @@ export function DownloadPage() {
             >
               <Download size={14} />
               Download .rpm
+            </a>
+            <a
+              href={FLATPAK_URL}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-drift-border text-sm font-medium hover:border-drift-accent transition-colors"
+            >
+              <Download size={14} />
+              Download .flatpak
             </a>
           </div>
         )}

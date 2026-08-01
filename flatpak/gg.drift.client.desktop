@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Drift Client
+Comment=Open-source Minecraft client
+Exec=drift-launcher
+Icon=gg.drift.client
+Terminal=false
+Categories=Game;
+StartupWMClass=drift-launcher

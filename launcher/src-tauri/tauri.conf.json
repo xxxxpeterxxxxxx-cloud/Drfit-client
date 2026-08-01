@@ -4,9 +4,9 @@
   "version": "0.1.0",
   "identifier": "gg.drift.client",
   "build": {
-    "beforeDevCommand": "pnpm dev",
+    "beforeDevCommand": "pnpm --filter launcher dev",
     "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "pnpm build",
+    "beforeBuildCommand": "pnpm --filter launcher build",
     "frontendDist": "../dist"
   },
   "app": {

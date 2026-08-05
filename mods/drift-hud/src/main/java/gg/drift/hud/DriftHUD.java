@@ -13,9 +13,11 @@ public class DriftHUD extends DriftModule implements ModInitializer {
     private CpsCounter cpsCounter;
     private CoordinatesDisplay coordinatesDisplay;
     private KeystrokesOverlay keystrokesOverlay;
+    private ComboCounter comboCounter;
+    private ReachDisplay reachDisplay;
 
     public DriftHUD() {
-        super("drifthud", "Drift HUD", "0.1.0");
+        super("drifthud", "Drift HUD", "0.2.0");
     }
 
     @Override
@@ -28,14 +30,18 @@ public class DriftHUD extends DriftModule implements ModInitializer {
         cpsCounter = new CpsCounter();
         coordinatesDisplay = new CoordinatesDisplay();
         keystrokesOverlay = new KeystrokesOverlay();
+        comboCounter = new ComboCounter();
+        reachDisplay = new ReachDisplay();
 
         HudRegistry.register(fpsCounter);
         HudRegistry.register(pingDisplay);
         HudRegistry.register(cpsCounter);
         HudRegistry.register(coordinatesDisplay);
         HudRegistry.register(keystrokesOverlay);
+        HudRegistry.register(comboCounter);
+        HudRegistry.register(reachDisplay);
 
-        DriftCore.LOGGER.info("Drift HUD module registered with 5 elements");
+        DriftCore.LOGGER.info("Drift HUD v0.2.0 registered with 7 elements");
     }
 
     @Override
@@ -53,6 +59,8 @@ public class DriftHUD extends DriftModule implements ModInitializer {
     public CpsCounter getCpsCounter() { return cpsCounter; }
     public CoordinatesDisplay getCoordinatesDisplay() { return coordinatesDisplay; }
     public KeystrokesOverlay getKeystrokesOverlay() { return keystrokesOverlay; }
+    public ComboCounter getComboCounter() { return comboCounter; }
+    public ReachDisplay getReachDisplay() { return reachDisplay; }
 
     public static DriftHUD getInstance() {
         return instance;

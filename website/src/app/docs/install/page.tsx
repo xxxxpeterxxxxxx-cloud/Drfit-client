@@ -1,12 +1,6 @@
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
-
 export default function InstallPage() {
   return (
-    <>
-      <Navbar />
-      <div className="pt-16 min-h-screen">
-        <div className="container-max py-12 max-w-3xl">
+    <div className="max-w-3xl">
           <h1 className="text-3xl font-bold mb-2">Installation Guide</h1>
           <p className="text-drift-text-secondary mb-8">
             Get Drift Client running on your system in under 5 minutes.
@@ -124,9 +118,6 @@ export default function InstallPage() {
               </div>
             </section>
           </div>
-        </div>
-      </div>
-      <Footer />
-    </>
+    </div>
   );
 }

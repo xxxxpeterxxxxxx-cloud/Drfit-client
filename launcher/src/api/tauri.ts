@@ -70,6 +70,7 @@ export const profileApi = {
 export const minecraftApi = {
   getVersionManifest: () => invoke<VersionManifest>("get_version_manifest"),
   downloadAssets: (versionId: string) => invoke<void>("download_assets", { versionId }),
+  downloadDriftMods: (profileId: string) => invoke<void>("download_drift_mods", { profileId }),
   launchGame: (
     profileId: string,
     accountUuid: string,
@@ -86,6 +87,8 @@ export const minecraftApi = {
       ramLimit,
       javaPath: javaPath ?? null,
     }),
+  detectJavaPath: () => invoke<string>("detect_java_path"),
+  getSupportedVersions: () => invoke<string[]>("get_supported_versions"),
 };
 
 // ─── Fabric API ──────────────────────────────────────────
@@ -125,3 +128,111 @@ export function onGameLaunch(cb: (data: any) => void): Promise<UnlistenFn> {
 export function onGameClosed(cb: (data: any) => void): Promise<UnlistenFn> {
   return listen("game-closed", (e) => cb(e.payload));
 }
+
+export interface DeviceCodeInfo {
+  user_code: string;
+  verification_uri: string;
+  device_code: string;
+  interval: number;
+  expires_in: number;
+}
+
+export function onDeviceCode(cb: (data: DeviceCodeInfo) => void): Promise<UnlistenFn> {
+  return listen("device-code", (e) => cb(e.payload as DeviceCodeInfo));
+}
+
+// ─── Cipher Bot API ──────────────────────────────────────
+
+export interface CipherConfig {
+  api_url: string;
+  api_key: string;
+  mc_server_id: string;
+}
+
+export interface BotHealth {
+  status: string;
+  timestamp: number;
+  supabase: boolean;
+}
+
+export interface BotStats {
+  guilds: number;
+  members: number;
+  uptime: number;
+  commands: number;
+}
+
+export interface BotGuild {
+  id: string;
+  name: string;
+  member_count: number;
+  icon: string | null;
+}
+
+export interface McServerStats {
+  online: boolean;
+  players: number;
+  max_players: number;
+  tps: number;
+  motd: string;
+  version: string;
+}
+
+export interface McPlayer {
+  name: string;
+  uuid: string;
+}
+
+export interface ConsoleLogs {
+  lines: string[];
+}
+
+export const cipherApi = {
+  setConfig: (apiUrl: string, apiKey: string, mcServerId: string) =>
+    invoke<void>("set_cipher_config", { apiUrl, apiKey, mcServerId }),
+  getConfig: () => invoke<CipherConfig>("get_cipher_config"),
+  health: () => invoke<BotHealth>("cipher_health"),
+  stats: () => invoke<BotStats>("cipher_stats"),
+  botGuilds: () => invoke<BotGuild[]>("cipher_bot_guilds"),
+  mcStatus: () => invoke<McServerStats>("mc_server_status"),
+  mcPlayers: () => invoke<McPlayer[]>("mc_server_players"),
+  mcCommand: (command: string) => invoke<string>("mc_server_command", { command }),
+  mcStart: () => invoke<string>("mc_server_start"),
+  mcStop: () => invoke<string>("mc_server_stop"),
+  mcRestart: () => invoke<string>("mc_server_restart"),
+  mcConsole: (lines?: number) => invoke<ConsoleLogs>("mc_console_logs", { lines: lines ?? 50 }),
+};
+
+// ─── CurseForge API ──────────────────────────────────────
+
+export interface CFMod {
+  id: number;
+  name: string;
+  summary: string;
+  download_count: number;
+  website_url: string;
+  icon_url: string | null;
+  authors: string[];
+  categories: string[];
+}
+
+export interface CFFile {
+  id: number;
+  file_name: string;
+  file_date: string;
+  download_url: string;
+  file_length: number;
+  release_type: number;
+  game_versions: string[];
+}
+
+export const curseforgeApi = {
+  setKey: (key: string) => invoke<void>("set_curseforge_key", { key }),
+  search: (query: string, page?: number) =>
+    invoke<CFMod[]>("curseforge_search", { query, page: page ?? 0 }),
+  files: (modId: number) => invoke<CFFile[]>("curseforge_files", { modId }),
+  install: (downloadUrl: string, filename: string, profileId: string) =>
+    invoke<string>("curseforge_install", { downloadUrl, filename, profileId }),
+  importMod: (profileId: string, filePath: string) =>
+    invoke<string>("import_mod", { profileId, filePath }),
+};

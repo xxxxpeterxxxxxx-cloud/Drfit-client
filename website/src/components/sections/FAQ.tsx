@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
 const faqs = [
@@ -38,45 +37,38 @@ export function FAQ() {
     <section className="py-24">
       <div className="container-max max-w-3xl">
         <div className="text-center mb-12">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-4xl font-bold"
-          >
+          <h2 className="text-4xl font-bold animate-fade-in-up">
             Frequently asked questions
-          </motion.h2>
+          </h2>
         </div>
 
         <div className="space-y-3">
           {faqs.map((faq, i) => (
-            <motion.div
+            <div
               key={i}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: i * 0.05 }}
-              className="card overflow-hidden"
+              className="card overflow-hidden animate-fade-in-up"
+              style={{ animationDelay: `${i * 0.05}s` }}
             >
               <button
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                className="w-full flex items-center justify-between p-5 text-left"
+                className="w-full flex items-center justify-between p-5 text-left hover:bg-drift-surface/30 transition-colors"
               >
                 <span className="font-medium">{faq.q}</span>
                 <ChevronDown
                   size={18}
-                  className={`text-drift-muted transition-transform ${
+                  className={`text-drift-muted transition-transform duration-300 ${
                     openIndex === i ? "rotate-180" : ""
                   }`}
                 />
               </button>
-              {openIndex === i && (
-                <div className="px-5 pb-5 text-sm text-drift-text-secondary leading-relaxed animate-fade-in">
+              <div className={`overflow-hidden transition-all duration-300 ${
+                openIndex === i ? "max-h-40" : "max-h-0"
+              }`}>
+                <div className="px-5 pb-5 text-sm text-drift-text-secondary leading-relaxed">
                   {faq.a}
                 </div>
-              )}
-            </motion.div>
+              </div>
+            </div>
           ))}
         </div>
       </div>

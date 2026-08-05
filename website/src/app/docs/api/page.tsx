@@ -1,12 +1,6 @@
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
-
 export default function ApiPage() {
   return (
-    <>
-      <Navbar />
-      <div className="pt-16 min-h-screen">
-        <div className="container-max py-12 max-w-3xl">
+    <div className="max-w-3xl">
           <h1 className="text-3xl font-bold mb-2">Launcher Architecture</h1>
           <p className="text-drift-text-secondary mb-8">
             The Drift Client launcher is built with Tauri v2 (Rust backend + React frontend).
@@ -104,9 +98,6 @@ export default function ApiPage() {
               </p>
             </section>
           </div>
-        </div>
-      </div>
-      <Footer />
-    </>
+    </div>
   );
 }

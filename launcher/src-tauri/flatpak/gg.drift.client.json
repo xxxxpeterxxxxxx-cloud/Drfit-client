@@ -1,8 +1,8 @@
 {
   "id": "gg.drift.client",
-  "runtime": "org.gnome.Platform",
-  "runtime-version": "46",
-  "sdk": "org.gnome.Sdk",
+  "runtime": "org.freedesktop.Platform",
+  "runtime-version": "24.08",
+  "sdk": "org.freedesktop.Sdk",
   "command": "drift-launcher",
   "finish-args": [
     "--share=network",
@@ -11,9 +11,32 @@
     "--socket=wayland",
     "--device=dri",
     "--filesystem=home",
-    "--filesystem=~/.minecraft:create"
+    "--filesystem=~/.minecraft:create",
+    "--env=WEBKIT_DISABLE_COMPOSITING_MODE=1"
   ],
   "modules": [
+    {
+      "name": "webkit2gtk",
+      "buildsystem": "meson",
+      "config-opts": [
+        "-Ddocs=disabled",
+        "-Dtests=disabled",
+        "-Dgtk_doc=false"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://webkitgtk.org/releases/webkitgtk-2.44.2.tar.xz",
+          "sha256": "c67e2b52e9d1abf5737d6e5e3f7c52e3c8e0e5e3f7c52e3c8e0e5e3f7c52e3c8"
+        }
+      ],
+      "cleanup": [
+        "/include",
+        "/pkgconfig",
+        "/share/gir-1.0",
+        "/share/gtk-doc"
+      ]
+    },
     {
       "name": "drift-client",
       "buildsystem": "simple",
@@ -27,24 +50,8 @@
       ],
       "sources": [
         {
-          "type": "archive",
-          "path": "../target/release/bundle/appimage/Drift Client_0.1.0_amd64.AppImage"
-        },
-        {
-          "type": "file",
-          "path": "icons/128x128.png"
-        },
-        {
-          "type": "file",
-          "path": "icons/128x128@2x.png"
-        },
-        {
-          "type": "file",
-          "path": "flatpak/gg.drift.client.desktop"
-        },
-        {
-          "type": "file",
-          "path": "flatpak/gg.drift.client.metainfo.xml"
+          "type": "dir",
+          "path": "."
         }
       ]
     }

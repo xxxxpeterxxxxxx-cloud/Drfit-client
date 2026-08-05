@@ -1,14 +1,16 @@
 package gg.drift.hud.hud;
 
 import gg.drift.core.render.ColorUtils;
+import gg.drift.core.render.RenderHelper;
 import gg.drift.core.render.ScreenPosition;
 
 public class FpsCounter extends HudElement {
     private int fps;
+    private int maxFps = 60;
 
     public FpsCounter() {
         super("fps", "FPS Counter");
-        setPosition(new ScreenPosition(5, 5));
+        setPosition(new ScreenPosition(8, 8));
     }
 
     @Override
@@ -16,37 +18,36 @@ public class FpsCounter extends HudElement {
         if (!isEnabled()) return;
 
         String text = fps + " FPS";
-        int color = fps >= 60 ? ColorUtils.rgb(0, 255, 0) :
-                     fps >= 30 ? ColorUtils.rgb(255, 255, 0) :
-                     ColorUtils.rgb(255, 0, 0);
+        int color = fps >= 60 ? COLOR_GOOD :
+                     fps >= 30 ? COLOR_WARN : COLOR_BAD;
 
-        int width = getTextWidth(text) + 8;
-        int height = 16;
+        int width = getWidth();
+        int height = getHeight();
+        int x = (int) getPosition().getX();
+        int y = (int) getPosition().getY();
 
-        renderBackground(width, height);
-        gg.drift.core.render.RenderHelper.drawText(
-            text,
-            (int) getPosition().getX() + 4,
-            (int) getPosition().getY() + 4,
-            color
-        );
+        renderCard(x, y, width, height, fps >= 60);
+
+        // Label
+        RenderHelper.drawText("FPS", x + 6, y + 4, COLOR_TEXT_MUTED);
+        // Value
+        RenderHelper.drawText(text, x + 6 + RenderHelper.getTextWidth("FPS  "), y + 4, color);
+
+        // Mini progress bar at bottom
+        float progress = Math.min(1f, fps / (float) maxFps);
+        drawProgressBar(x + 4, y + height - 3, width - 8, 1, progress, color);
     }
 
     @Override
     public int getWidth() {
-        return getTextWidth(fps + " FPS") + 8;
+        return RenderHelper.getTextWidth("FPS  999 FPS") + 12;
     }
 
     @Override
     public int getHeight() {
-        return 16;
+        return 22;
     }
 
-    public void setFps(int fps) {
-        this.fps = fps;
-    }
-
-    private int getTextWidth(String text) {
-        return gg.drift.core.render.RenderHelper.getTextWidth(text);
-    }
+    public void setFps(int fps) { this.fps = fps; }
+    public void setMaxFps(int max) { this.maxFps = max; }
 }

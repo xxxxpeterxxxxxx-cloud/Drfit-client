@@ -18,5 +18,8 @@
   },
   "entrypoints": {
     "main": ["gg.drift.qol.DriftQoL"]
-  }
+  },
+  "mixins": [
+    "driftqol.mixins.json"
+  ]
 }

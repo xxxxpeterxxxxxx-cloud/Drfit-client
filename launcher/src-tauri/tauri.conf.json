@@ -12,6 +12,7 @@
   "app": {
     "windows": [
       {
+        "label": "main",
         "title": "Drift Client",
         "width": 1100,
         "height": 720,
@@ -37,21 +38,28 @@
     ],
     "windows": {
       "nsis": {
-        "installMode": "perMachine",
+        "installMode": "currentUser",
         "languages": ["English", "German", "French", "Spanish"],
-        "displayLanguageSelector": true
+        "displayLanguageSelector": false
+      },
+      "webviewInstallMode": {
+        "type": "embedBootstrapper"
       }
     },
     "macOS": {
       "minimumSystemVersion": "10.15",
-      "signingIdentity": null
+      "signingIdentity": null,
+      "entitlements": null,
+      "exceptionDomain": "",
+      "frameworks": [],
+      "providerShortName": null
     },
     "linux": {
       "deb": {
-        "depends": ["libwebkit2gtk-4.1-0", "libgtk-3-0"]
+        "depends": ["libwebkit2gtk-4.1-0", "libgtk-3-0", "libayatana-appindicator3-1", "librsvg2-2"]
       },
       "rpm": {
-        "depends": ["webkit2gtk4.1", "gtk3"]
+        "depends": ["webkit2gtk4.1", "gtk3", "libappindicator-gtk3", "librsvg2"]
       },
       "appimage": {
         "bundleMediaFramework": true
@@ -59,7 +67,8 @@
     },
     "category": "Game",
     "shortDescription": "Open-source Minecraft client",
-    "longDescription": "Lightweight Minecraft client with Sodium, Lithium, custom HUD, and QoL features. Tauri v2, Rust + React."
+    "longDescription": "Lightweight Minecraft client with Sodium, Lithium, custom HUD, and QoL features. Tauri v2, Rust + React.",
+    "publisher": "Drift Client"
   },
   "plugins": {}
 }

@@ -1,8 +1,8 @@
 use serde::{Deserialize, Serialize};
 use std::sync::Mutex;
-use tauri::State;
+use tauri::{Emitter, State};
 
-const CLIENT_ID: &str = "c36a8f9e-9b5c-4c2c-8b1f-7a3e5b8c9d0e";
+const CLIENT_ID: &str = "00000000402b5328";
 const SCOPE: &str = "XboxLive.signin offline_access";
 
 #[derive(Default)]
@@ -276,8 +276,17 @@ async fn fetch_mc_profile(mc_token: &str) -> Result<(String, String), String> {
 }
 
 #[tauri::command]
-pub async fn login_microsoft(state: State<'_, AuthState>) -> Result<Account, String> {
+pub async fn login_microsoft(app: tauri::AppHandle, state: State<'_, AuthState>) -> Result<Account, String> {
     let device_code = request_device_code().await?;
+
+    let info = DeviceCodeInfo {
+        user_code: device_code.user_code.clone(),
+        verification_uri: device_code.verification_uri.clone(),
+        device_code: device_code.device_code.clone(),
+        interval: device_code.interval,
+        expires_in: device_code.expires_in,
+    };
+    let _ = app.emit("device-code", &info);
 
     let ms_token = poll_for_token(&device_code.device_code, device_code.interval).await?;
     let ms_refresh = ms_token.refresh_token.clone();

@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Check, X } from "lucide-react";
 
 const rows = [
@@ -25,24 +24,12 @@ export function Comparison() {
     <section className="py-24">
       <div className="container-max">
         <div className="text-center mb-12">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-4xl font-bold"
-          >
+          <h2 className="text-4xl font-bold animate-fade-in-up">
             Drift vs <span className="text-drift-muted">Vanilla</span>
-          </motion.h2>
+          </h2>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="card overflow-hidden max-w-3xl mx-auto"
-        >
+        <div className="card overflow-hidden max-w-3xl mx-auto animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
           <div className="grid grid-cols-3 border-b border-drift-border">
             <div className="p-4 font-semibold">Feature</div>
             <div className="p-4 font-semibold text-center text-drift-accent">Drift</div>
@@ -51,12 +38,12 @@ export function Comparison() {
           {rows.map((row, i) => (
             <div
               key={row.feature}
-              className={`grid grid-cols-3 ${i % 2 === 0 ? "bg-drift-bg/30" : ""}`}
+              className={`grid grid-cols-3 transition-colors hover:bg-drift-surface/30 ${i % 2 === 0 ? "bg-drift-bg/20" : ""}`}
             >
               <div className="p-4 text-sm text-drift-text-secondary">{row.feature}</div>
               <div className="p-4 flex justify-center">
                 {row.drift ? (
-                  <Check size={18} className="text-green-500" />
+                  <Check size={18} className="text-drift-accent" />
                 ) : (
                   <X size={18} className="text-drift-muted" />
                 )}
@@ -70,7 +57,7 @@ export function Comparison() {
               </div>
             </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

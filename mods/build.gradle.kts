@@ -1,7 +1,3 @@
-plugins {
-    id("java")
-}
-
 group = "gg.drift.client"
 version = "0.1.0"
 
@@ -14,11 +10,11 @@ allprojects {
 }
 
 subprojects {
-    apply(plugin = "java")
-
-    java {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+    pluginManager.withPlugin("java") {
+        extensions.configure<JavaPluginExtension> {
+            sourceCompatibility = JavaVersion.VERSION_21
+            targetCompatibility = JavaVersion.VERSION_21
+        }
     }
 
     tasks.withType<JavaCompile> {
@@ -26,7 +22,11 @@ subprojects {
     }
 }
 
-// Ensure drift-core is built before dependent projects try to read its JAR
-project(":drift-hud").evaluationDependsOn(":drift-core")
-project(":drift-qol").evaluationDependsOn(":drift-core")
-project(":drift-perf").evaluationDependsOn(":drift-core")
+// drift-hud and drift-perf depend on drift-core via modImplementation(project(":drift-core"))
+// Ensure compileJava waits for drift-core:remapJar
+project(":drift-hud").afterEvaluate {
+    tasks.named("compileJava").configure { dependsOn(project(":drift-core").tasks.named("remapJar")) }
+}
+project(":drift-perf").afterEvaluate {
+    tasks.named("compileJava").configure { dependsOn(project(":drift-core").tasks.named("remapJar")) }
+}

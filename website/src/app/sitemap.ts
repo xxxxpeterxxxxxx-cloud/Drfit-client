@@ -14,5 +14,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: "https://drift.gg/community", lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
     { url: "https://drift.gg/privacy", lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
     { url: "https://drift.gg/tos", lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
+    { url: "https://drift.gg/licenses", lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
   ];
 }

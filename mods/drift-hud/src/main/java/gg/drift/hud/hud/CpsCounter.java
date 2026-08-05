@@ -1,51 +1,62 @@
 package gg.drift.hud.hud;
 
 import gg.drift.core.render.ColorUtils;
+import gg.drift.core.render.RenderHelper;
+import gg.drift.core.render.ScreenPosition;
 
 public class CpsCounter extends HudElement {
     private int cps;
+    private int peakCps;
 
     public CpsCounter() {
         super("cps", "CPS Counter");
-        setPosition(new gg.drift.core.render.ScreenPosition(5, 80));
+        setPosition(new ScreenPosition(8, 60));
     }
 
     @Override
     public void render(float tickDelta) {
         if (!isEnabled()) return;
 
-        String text = cps + " CPS";
-        int color = cps >= 10 ? ColorUtils.rgb(0, 255, 0) :
-                     cps >= 5 ? ColorUtils.rgb(255, 255, 0) :
-                     ColorUtils.rgb(255, 100, 100);
+        int width = getWidth();
+        int height = getHeight();
+        int x = (int) getPosition().getX();
+        int y = (int) getPosition().getY();
 
-        int width = getTextWidth(text) + 8;
-        int height = 16;
+        int color = cps >= 10 ? COLOR_GOOD :
+                     cps >= 5 ? COLOR_WARN : COLOR_BAD;
 
-        renderBackground(width, height);
-        gg.drift.core.render.RenderHelper.drawText(
-            text,
-            (int) getPosition().getX() + 4,
-            (int) getPosition().getY() + 4,
-            color
-        );
+        renderCard(x, y, width, height, cps >= 8);
+
+        // Label
+        RenderHelper.drawText("CPS", x + 6, y + 4, COLOR_TEXT_MUTED);
+        // Value
+        String valText = String.valueOf(cps);
+        RenderHelper.drawText(valText, x + 6 + RenderHelper.getTextWidth("CPS  "), y + 4, color);
+
+        // Peak indicator
+        if (peakCps > 0) {
+            String peak = "peak " + peakCps;
+            RenderHelper.drawText(peak, x + width - RenderHelper.getTextWidth(peak) - 6, y + 4, COLOR_TEXT_MUTED);
+        }
+
+        // Toggle bar at bottom
+        drawToggleBar(x + 4, y + height - 3, width - 8, cps >= 8);
     }
 
     @Override
     public int getWidth() {
-        return getTextWidth(cps + " CPS") + 8;
+        return RenderHelper.getTextWidth("CPS  99  peak 99") + 14;
     }
 
     @Override
     public int getHeight() {
-        return 16;
+        return 22;
     }
 
     public void setCps(int cps) {
         this.cps = cps;
+        if (cps > peakCps) peakCps = cps;
     }
 
-    private int getTextWidth(String text) {
-        return gg.drift.core.render.RenderHelper.getTextWidth(text);
-    }
+    public void resetPeak() { peakCps = 0; }
 }

@@ -69,9 +69,15 @@ jobs:
             ```
 
             ## What's New
-            - Tauri v2 launcher with React frontend
-            - Rust backend: Microsoft auth, Minecraft launch, Fabric install, Modrinth integration
-            - 5 Fabric mods: core, hud, qol, perf, legacy (1.8.9)
+            - Tauri v2 launcher with React frontend (~10MB, Rust + React)
+            - Rust backend: Microsoft auth (device code flow), Minecraft launch, Fabric install
+            - Modrinth + CurseForge mod browsing and one-click install
+            - Cipher Bot integration (Discord bot & MC server control)
+            - 4 Fabric mods: core, hud, qol, perf (1.21.1)
+            - drift-legacy (1.8.9 PvP) coming soon
+            - Auto-download of Drift mods from GitHub releases
+            - Custom HUD with FPS, Ping, CPS, Coordinates, Keystrokes
+            - QoL: Toggle Sprint/Sneak, Zoom, Fullbright, Custom Crosshair
 
             ---
             **License:** GPL-3.0 | **Requirements:** Java 21+, Minecraft account
@@ -205,8 +211,14 @@ jobs:
         run: ./gradlew :drift-core:remapJar --no-daemon
         working-directory: mods
 
-      - name: Build remaining mods
-        run: ./gradlew :drift-hud:build :drift-qol:build :drift-perf:build :drift-legacy:build --no-daemon
+      - name: Build drift-hud and drift-perf
+        run: ./gradlew :drift-hud:build :drift-perf:build --no-daemon
+        working-directory: mods
+
+      - name: Build drift-qol (standalone)
+        run: |
+          cd drift-qol
+          ../gradlew clean build --no-daemon
         working-directory: mods
 
       - name: Upload mod JARs to release

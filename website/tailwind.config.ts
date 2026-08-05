@@ -50,6 +50,9 @@ const config: Config = {
         "float": "float 6s ease-in-out infinite",
         "shimmer": "shimmer 2s linear infinite",
         "pulse-glow": "pulseGlow 2s ease-in-out infinite",
+        "aurora": "aurora 8s ease-in-out infinite alternate",
+        "blink": "blink 1.2s ease-in-out infinite",
+        "spin-slow": "spin 8s linear infinite",
       },
       keyframes: {
         fadeIn: {
@@ -79,6 +82,15 @@ const config: Config = {
         pulseGlow: {
           "0%, 100%": { opacity: "1", boxShadow: "0 0 20px rgba(16,185,129,0.3)" },
           "50%": { opacity: "0.8", boxShadow: "0 0 30px rgba(16,185,129,0.5)" },
+        },
+        aurora: {
+          "0%": { transform: "translate(0, 0) scale(1)", opacity: "0.3" },
+          "50%": { transform: "translate(30px, -20px) scale(1.1)", opacity: "0.5" },
+          "100%": { transform: "translate(-20px, 10px) scale(0.95)", opacity: "0.35" },
+        },
+        blink: {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.3" },
         },
       },
     },

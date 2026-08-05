@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("fabric-loom") version "1.7.3"
+    id("fabric-loom")
 }
 
 group = "gg.drift.client"
@@ -16,7 +16,13 @@ dependencies {
     mappings("net.fabricmc:yarn:${yarnMappings}:v2")
     modImplementation("net.fabricmc:fabric-loader:${loaderVersion}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${fabricVersion}")
-    compileOnly(files("../drift-core/build/libs/drift-core-0.1.0.jar"))
+    implementation(project(":drift-core"))
+}
+
+loom {
+    mixin {
+        defaultRefmapName = "drifthud.refmap.json"
+    }
 }
 
 tasks.processResources {

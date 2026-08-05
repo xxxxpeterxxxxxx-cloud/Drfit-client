@@ -1,12 +1,6 @@
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
-
 export default function ConfigPage() {
   return (
-    <>
-      <Navbar />
-      <div className="pt-16 min-h-screen">
-        <div className="container-max py-12 max-w-3xl">
+    <div className="max-w-3xl">
           <h1 className="text-3xl font-bold mb-2">Configuration Reference</h1>
           <p className="text-drift-text-secondary mb-8">
             All configuration options for Drift Client, stored in <code className="text-drift-accent">~/.minecraft/config/drift/</code>.
@@ -163,9 +157,6 @@ export default function ConfigPage() {
               </ul>
             </section>
           </div>
-        </div>
-      </div>
-      <Footer />
-    </>
+    </div>
   );
 }

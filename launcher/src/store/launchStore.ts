@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { profileApi, minecraftApi, authApi, onDownloadProgress, onGameClosed } from "../api/tauri";
+import { useSettingsStore } from "./settingsStore";
 import type { Profile, Account } from "../api/tauri";
+import { getCurrentWindow } from "@tauri-apps/api/window";
 
 interface LaunchState {
   isLaunching: boolean;
@@ -72,13 +74,16 @@ export const useLaunchStore = create<LaunchState>((set, get) => ({
 
     set({ isLaunching: true, progress: 0, status: "Downloading assets...", error: null });
 
+    let unlisten: (() => void) | null = null;
     try {
-      const unlisten = await onDownloadProgress((data: any) => {
+      unlisten = await onDownloadProgress((data: any) => {
         if (data.progress != null) set({ progress: data.progress });
         if (data.step) set({ status: data.step });
       });
 
       await minecraftApi.downloadAssets(profile.minecraft_version);
+      set({ status: "Downloading Drift mods..." });
+      await minecraftApi.downloadDriftMods(profile.id);
       set({ status: "Launching game..." });
 
       await minecraftApi.launchGame(
@@ -86,18 +91,35 @@ export const useLaunchStore = create<LaunchState>((set, get) => ({
         account.uuid,
         account.username,
         account.access_token,
-        profile.ram_limit,
+        useSettingsStore.getState().ramLimit,
+        useSettingsStore.getState().javaPath,
       );
 
-      set({ status: "Game running", progress: 100 });
-      unlisten();
+      set({ status: "Game running", progress: 100, isLaunching: false });
+      launchTime = Date.now();
+
+      if (useSettingsStore.getState().closeOnLaunch) {
+        await getCurrentWindow().close();
+      }
     } catch (e) {
       set({ error: String(e), isLaunching: false, status: "" });
+    } finally {
+      if (unlisten) unlisten();
     }
   },
 }));
 
 // Listen for game-closed event globally
+let launchTime: number | null = null;
+
 onGameClosed(() => {
+  if (launchTime) {
+    const elapsedMin = Math.floor((Date.now() - launchTime) / 60000);
+    if (elapsedMin > 0) {
+      const saved = parseInt(localStorage.getItem("drift-playtime") || "0", 10);
+      localStorage.setItem("drift-playtime", String(saved + elapsedMin));
+    }
+    launchTime = null;
+  }
   useLaunchStore.setState({ isLaunching: false, status: "", progress: 0 });
 });

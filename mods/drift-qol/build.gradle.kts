@@ -1,11 +1,16 @@
 plugins {
     id("java")
-    id("fabric-loom") version "1.7.3"
-    // id("org.jetbrains.kotlin.jvm") version "2.0.0" // TODO: Re-enable after Loom classloader fix
+    id("fabric-loom")
+    id("org.jetbrains.kotlin.jvm")
 }
 
 group = "gg.drift.client"
 version = "0.1.0"
+
+repositories {
+    mavenCentral()
+    maven("https://maven.fabricmc.net")
+}
 
 val minecraftVersion = "1.21.1"
 val yarnMappings = "1.21.1+build.3"
@@ -18,7 +23,13 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:${loaderVersion}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${fabricVersion}")
     modImplementation("net.fabricmc:fabric-language-kotlin:1.11.0+kotlin.2.0.0")
-    compileOnly(files("../drift-core/build/libs/drift-core-0.1.0.jar"))
+    implementation(files("../drift-core/build/classes/java/main"))
+}
+
+loom {
+    mixin {
+        defaultRefmapName = "driftqol.refmap.json"
+    }
 }
 
 tasks.processResources {

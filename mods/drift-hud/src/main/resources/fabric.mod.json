@@ -3,7 +3,7 @@
   "id": "drifthud",
   "version": "${version}",
   "name": "Drift HUD",
-  "description": "HUD overlays - FPS, Ping, CPS, Coordinates, Armor, Keystrokes",
+  "description": "HUD overlays - FPS, Ping, CPS, Coordinates, Keystrokes, Combo, Reach + Config Screen",
   "authors": ["Drift Client"],
   "contact": { "homepage": "https://drift.gg" },
   "license": "GPL-3.0",
@@ -17,5 +17,8 @@
   },
   "entrypoints": {
     "main": ["gg.drift.hud.DriftHUD"]
-  }
+  },
+  "mixins": [
+    "drifthud.mixins.json"
+  ]
 }

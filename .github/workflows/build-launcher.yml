@@ -1,0 +1,183 @@
+name: Build Drift Launcher
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: ubuntu-22.04
+            target: x86_64-unknown-linux-gnu
+            name: linux-amd64
+          - platform: windows-latest
+            target: x86_64-pc-windows-msvc
+            name: windows-amd64
+          - platform: macos-latest
+            target: aarch64-apple-darwin
+            name: macos-arm64
+          - platform: macos-latest
+            target: x86_64-apple-darwin
+            name: macos-intel
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: "launcher/src-tauri -> target"
+
+      # Linux dependencies
+      - name: Install Linux dependencies
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev
+
+      # Install dependencies
+      - name: Install pnpm dependencies
+        run: pnpm install -r
+
+      # Build
+      - name: Build Tauri app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          projectPath: launcher
+          tagName: ${{ github.ref_name }}
+          releaseName: "Drift Client ${{ github.ref_name }}"
+          releaseBody: "See the assets below to download the launcher for your platform."
+          releaseDraft: true
+          prerelease: false
+          args: --target ${{ matrix.target }}
+
+  build-flatpak:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: "launcher/src-tauri -> target"
+
+      - name: Install Linux dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev flatpak flatpak-builder
+
+      - name: Install Flatpak runtime
+        run: |
+          flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+          flatpak --user install -y flathub org.freedesktop.Platform//23.08 org.freedesktop.Sdk//23.08
+
+      - name: Install pnpm dependencies
+        run: pnpm install -r
+
+      - name: Build Tauri app (binary only)
+        run: |
+          cd launcher
+          pnpm build
+          cd src-tauri
+          cargo build --release
+
+      - name: Create Flatpak manifest
+        run: |
+          mkdir -p flatpak-build
+          cat > flatpak-build/gg.drift.Client.yaml << 'EOF'
+          app-id: gg.drift.Client
+          branch: stable
+          runtime: org.freedesktop.Platform
+          runtime-version: '23.08'
+          sdk: org.freedesktop.Sdk
+          command: drift-launcher
+          finish-args: |
+            --share=network
+            --share=ipc
+            --socket=x11
+            --device=dri
+            --filesystem=home
+          modules:
+            - name: drift-launcher
+              buildsystem: simple
+              build-commands:
+                - install -Dm755 drift-launcher /app/bin/drift-launcher
+                - install -Dm644 icon.png /app/share/icons/hicolor/256x256/apps/gg.drift.Client.png
+                - install -Dm644 gg.drift.Client.desktop /app/share/applications/gg.drift.Client.desktop
+              sources:
+                - type: file
+                  path: drift-launcher
+                - type: file
+                  path: icon.png
+                - type: file
+                  path: gg.drift.Client.desktop
+          EOF
+
+      - name: Prepare Flatpak files
+        run: |
+          cp launcher/src-tauri/target/release/drift-launcher flatpak-build/
+          cp launcher/src-tauri/icons/128x128.png flatpak-build/icon.png
+          cat > flatpak-build/gg.drift.Client.desktop << 'EOF'
+          [Desktop Entry]
+          Name=Drift Client
+          Comment=Open-source Minecraft client
+          Exec=drift-launcher
+          Icon=gg.drift.Client
+          Terminal=false
+          Type=Application
+          Categories=Game;
+          EOF
+
+      - name: Build Flatpak
+        run: |
+          cd flatpak-build
+          flatpak-builder --user --repo=repo --force-clean build gg.drift.Client.yaml
+          flatpak build-bundle repo drift-client.flatpak gg.drift.Client stable
+
+      - name: Upload Flatpak
+        uses: actions/upload-artifact@v4
+        with:
+          name: drift-client-flatpak
+          path: flatpak-build/drift-client.flatpak
+
+      - name: Attach Flatpak to release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: flatpak-build/drift-client.flatpak
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

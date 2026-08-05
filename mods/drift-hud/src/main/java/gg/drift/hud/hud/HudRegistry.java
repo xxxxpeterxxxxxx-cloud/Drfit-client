@@ -1,6 +1,5 @@
 package gg.drift.hud.hud;
 
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -19,21 +18,21 @@ public class HudRegistry {
         return elements.get(id);
     }
 
-    public static Collection<HudElement> getAll() {
+    public static java.util.Collection<HudElement> getAll() {
         return elements.values();
     }
 
+    public static int count() {
+        return elements.size();
+    }
+
     public static void setEnabled(String id, boolean enabled) {
-        HudElement element = elements.get(id);
-        if (element != null) {
-            element.setEnabled(enabled);
-        }
+        HudElement el = elements.get(id);
+        if (el != null) el.setEnabled(enabled);
     }
 
     public static void toggle(String id) {
-        HudElement element = elements.get(id);
-        if (element != null) {
-            element.setEnabled(!element.isEnabled());
-        }
+        HudElement el = elements.get(id);
+        if (el != null) el.setEnabled(!el.isEnabled());
     }
 }

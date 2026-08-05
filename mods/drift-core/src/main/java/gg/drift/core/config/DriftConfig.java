@@ -17,6 +17,23 @@ public class DriftConfig {
 
     public static class HudConfig {
         public String preset = "default";
+        public boolean fps = true;
+        public boolean ping = true;
+        public boolean cps = true;
+        public boolean coordinates = true;
+        public boolean keystrokes = true;
+        public boolean combo = false;
+        public boolean reach = false;
+        public boolean armorHud = true;
+        public boolean potionHud = true;
+        public boolean speedHud = false;
+        public boolean biomeHud = false;
+        public boolean directionHud = false;
+        public boolean bossBarHud = false;
+        public boolean waterMark = true;
+        public String waterMarkText = "Drift Client";
+        public boolean fpsGraph = false;
+        public boolean memoryHud = false;
         public HudElement[] elements = new HudElement[0];
     }
 

@@ -62,7 +62,7 @@ export default function PrivacyPage() {
               <h2 className="text-lg font-semibold mb-2">Open Source</h2>
               <p className="text-drift-text-secondary leading-relaxed">
                 You can verify everything stated here by reading the source code on{" "}
-                <a href="https://github.com/driftclient" className="text-drift-accent hover:underline">GitHub</a>.
+                <a href="https://github.com/xxxxpeterxxxxxx-cloud/Drfit-client" className="text-drift-accent hover:underline">GitHub</a>.
                 If you find anything that contradicts this policy, please open an issue.
               </p>
             </section>

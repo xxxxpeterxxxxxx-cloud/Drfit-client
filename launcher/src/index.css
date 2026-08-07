@@ -45,13 +45,19 @@
     @apply bg-drift-surface border border-drift-border rounded-xl p-4 transition-all duration-200;
   }
   .card-hover {
-    @apply card hover:border-drift-accent/30 hover:shadow-lg;
+    @apply card hover:shadow-lg;
+  }
+  .card-hover:hover {
+    border-color: hsl(var(--accent, 162 84% 43%) / 0.3);
   }
   .nav-item {
     @apply flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150 text-drift-muted hover:text-drift-text hover:bg-drift-surface cursor-pointer relative;
   }
   .nav-item-active {
-    @apply nav-item text-drift-text bg-drift-accent/10;
+    @apply nav-item text-drift-text;
+  }
+  .nav-item-active {
+    background-color: hsl(var(--accent, 162 84% 43%) / 0.1);
   }
   .nav-item-active::before {
     content: '';

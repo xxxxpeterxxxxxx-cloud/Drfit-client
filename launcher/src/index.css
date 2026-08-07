@@ -30,10 +30,7 @@
     @apply px-4 py-2 rounded-lg font-medium transition-all duration-150;
   }
   .btn-primary {
-    @apply btn bg-drift-accent hover:bg-drift-accent-hover text-white shadow-lg;
-  }
-  .btn-3d {
-    @apply btn bg-drift-accent hover:bg-drift-accent-hover text-white border-2 border-b-4 border-drift-accent-dark shadow-3d hover:shadow-3d-hover active:translate-y-0.5;
+    @apply btn bg-drift-accent hover:bg-drift-accent-hover text-white;
   }
   .btn-ghost {
     @apply btn hover:bg-drift-surface text-drift-text;
@@ -44,19 +41,11 @@
   .card {
     @apply bg-drift-surface border border-drift-border rounded-xl p-4 transition-all duration-200;
   }
-  .card-hover {
-    @apply card hover:shadow-lg;
-  }
-  .card-hover:hover {
-    border-color: hsl(var(--accent, 162 84% 43%) / 0.3);
-  }
   .nav-item {
     @apply flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150 text-drift-muted hover:text-drift-text hover:bg-drift-surface cursor-pointer relative;
   }
   .nav-item-active {
     @apply nav-item text-drift-text;
-  }
-  .nav-item-active {
     background-color: hsl(var(--accent, 162 84% 43%) / 0.1);
   }
   .nav-item-active::before {
@@ -65,7 +54,6 @@
   }
 }
 
-/* Custom range slider */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
@@ -80,10 +68,9 @@ input[type="range"]::-webkit-slider-thumb {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: #10B981;
+  background: hsl(var(--accent, 162 84% 43%));
   cursor: pointer;
   border: 2px solid #0F1422;
-  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
   transition: transform 0.15s;
 }
 
@@ -95,96 +82,31 @@ input[type="range"]::-moz-range-thumb {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: #10B981;
+  background: hsl(var(--accent, 162 84% 43%));
   cursor: pointer;
   border: 2px solid #0F1422;
-  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
 }
 
-/* Custom scrollbar — accent-colored like NoRisk */
-.custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: hsl(var(--accent, 162 84% 43%) / 0.4) transparent;
-}
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: hsl(var(--accent, 162 84% 43%) / 0.4);
-  border-radius: 4px;
+  background-color: hsl(var(--accent, 162 84% 43%) / 0.3);
+  border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background-color: hsl(var(--accent, 162 84% 43%) / 0.6);
-}
-::-webkit-scrollbar-thumb:active {
-  background-color: hsl(var(--accent, 162 84% 43%) / 0.8);
+  background-color: hsl(var(--accent, 162 84% 43%) / 0.5);
 }
 
-/* Glow animation for play button */
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px hsl(var(--accent, 162 84% 43%) / 0.2); }
-  50% { box-shadow: 0 0 30px hsl(var(--accent, 162 84% 43%) / 0.4); }
+.image-render-pixelated {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
 }
 
-.pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
-/* Text shadows like NoRisk Minecraft style */
-.text-shadow {
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9), 0 0 3px rgba(0, 0, 0, 1);
-}
-.text-shadow-sm {
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 2px rgba(0, 0, 0, 1);
-}
-
-/* Ripple effect for buttons */
-.ripple-container {
-  position: relative;
-  overflow: hidden;
-}
-.ripple-effect {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  pointer-events: none;
-  animation: ripple 0.85s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-/* Themed border radius */
-.themed-radius {
-  border-radius: var(--radius) !important;
-}
-
-/* Backdrop blur for Linux compatibility */
-.backdrop-blur-md-anyos {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.glass {
-  background: rgba(15, 20, 34, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-/* Shimmer effect for loading */
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-.shimmer {
-  background: linear-gradient(90deg, #0F1422 25%, #141B2D 50%, #0F1422 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-}
-
-/* Light mode overrides */
 html:not(.dark) body {
   @apply bg-white text-slate-900;
 }
@@ -200,8 +122,3 @@ html:not(.dark) .text-drift-muted { color: #94a3b8 !important; }
 html:not(.dark) .card { @apply bg-white border-slate-200 shadow-sm; }
 html:not(.dark) .nav-item:hover { @apply bg-slate-100; }
 html:not(.dark) .nav-item-active { @apply bg-emerald-50 text-emerald-600 border-emerald-200; }
-
-.image-render-pixelated {
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-}

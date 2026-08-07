@@ -31,10 +31,11 @@ struct DeviceCodeResponse {
 
 #[derive(Deserialize)]
 struct TokenResponse {
-    access_token: String,
+    access_token: Option<String>,
     refresh_token: Option<String>,
     expires_in: Option<u64>,
     error: Option<String>,
+    error_description: Option<String>,
 }
 
 #[derive(Deserialize)]
@@ -184,7 +185,15 @@ async fn poll_for_token(device_code: &str, interval: u64) -> Result<TokenRespons
                 tokio::time::sleep(std::time::Duration::from_secs(interval + 5)).await;
                 continue;
             }
-            return Err(format!("Auth error: {}", err));
+            if err == "expired_token" {
+                return Err("Device code expired. Please try logging in again.".into());
+            }
+            let desc = token.error_description.unwrap_or_else(|| "Unknown error".into());
+            return Err(format!("Auth error: {} — {}", err, desc));
+        }
+
+        if token.access_token.is_none() {
+            return Err("Token response missing access_token".into());
         }
 
         return Ok(token);
@@ -289,9 +298,10 @@ pub async fn login_microsoft(app: tauri::AppHandle, state: State<'_, AuthState>)
     let _ = app.emit("device-code", &info);
 
     let ms_token = poll_for_token(&device_code.device_code, device_code.interval).await?;
+    let ms_access = ms_token.access_token.clone().unwrap_or_default();
     let ms_refresh = ms_token.refresh_token.clone();
 
-    let xbl_token = exchange_xbl(&ms_token.access_token).await?;
+    let xbl_token = exchange_xbl(&ms_access).await?;
     let xsts_token = exchange_xsts(&xbl_token).await?;
     let mc_token = exchange_mc_token(&xsts_token).await?;
     let (uuid, username) = fetch_mc_profile(&mc_token).await?;

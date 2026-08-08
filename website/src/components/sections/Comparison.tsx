@@ -21,7 +21,7 @@ const rows = [
 
 export function Comparison() {
   return (
-    <section className="py-24">
+    <section id="comparison" className="py-24 border-t-2 border-drift-border relative">
       <div className="container-max">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold animate-fade-in-up">
@@ -32,7 +32,7 @@ export function Comparison() {
         <div className="card overflow-hidden max-w-3xl mx-auto animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
           <div className="grid grid-cols-3 border-b border-drift-border">
             <div className="p-4 font-semibold">Feature</div>
-            <div className="p-4 font-semibold text-center text-drift-accent">Drift</div>
+            <div className="p-4 font-semibold text-center text-drift-mc-green">Drift</div>
             <div className="p-4 font-semibold text-center text-drift-muted">Vanilla</div>
           </div>
           {rows.map((row, i) => (
@@ -43,14 +43,14 @@ export function Comparison() {
               <div className="p-4 text-sm text-drift-text-secondary">{row.feature}</div>
               <div className="p-4 flex justify-center">
                 {row.drift ? (
-                  <Check size={18} className="text-drift-accent" />
+                  <Check size={18} className="text-drift-mc-green" />
                 ) : (
                   <X size={18} className="text-drift-muted" />
                 )}
               </div>
               <div className="p-4 flex justify-center">
                 {row.vanilla ? (
-                  <Check size={18} className="text-green-500" />
+                  <Check size={18} className="text-drift-mc-green" />
                 ) : (
                   <X size={18} className="text-drift-muted" />
                 )}

@@ -9,21 +9,22 @@
   body {
     @apply bg-drift-bg text-drift-text;
     background-image:
-      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(16, 185, 129, 0.04), transparent),
-      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(16, 185, 129, 0.02), transparent);
+      radial-gradient(ellipse 80% 50% at 50% -20%, hsl(var(--accent, 172 70% 45%) / 0.04), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(91, 186, 58, 0.02), transparent);
     background-attachment: fixed;
   }
   ::selection {
-    @apply bg-drift-accent/30 text-drift-text;
+    background-color: hsl(var(--accent, 172 70% 45%) / 0.3);
+    color: #E2E8F0;
   }
   ::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
   }
   ::-webkit-scrollbar-track {
     @apply bg-drift-bg;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-drift-border rounded-full;
+    @apply bg-drift-border;
   }
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-drift-border-light;
@@ -35,16 +36,17 @@
     @apply max-w-6xl mx-auto px-6;
   }
   .btn {
-    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors duration-150;
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 font-medium transition-all duration-150;
+    border-radius: 4px;
   }
   .btn-primary {
     @apply btn bg-drift-accent hover:bg-drift-accent-hover text-white;
   }
   .btn-secondary {
-    @apply btn bg-drift-surface hover:bg-drift-surface-hover text-drift-text border border-drift-border hover:border-drift-border-light;
+    @apply btn bg-drift-surface hover:bg-drift-surface-hover text-drift-text border-2 border-drift-border hover:border-drift-border-light;
   }
-  .btn-gold {
-    @apply btn bg-drift-gold hover:bg-drift-gold-light text-drift-bg font-semibold;
+  .btn-mc-green {
+    @apply btn bg-drift-mc-green hover:bg-drift-mc-green-light text-white font-semibold;
   }
   .card-glow {
     @apply relative overflow-hidden;
@@ -52,31 +54,34 @@
   .card-glow::before {
     content: "";
     @apply absolute inset-0 opacity-0 transition-opacity duration-300;
-    background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.06), transparent 70%);
+    background: radial-gradient(circle at 50% 0%, hsl(var(--accent, 172 70% 45%) / 0.06), transparent 70%);
   }
   .card-glow:hover::before {
     @apply opacity-100;
   }
   .gradient-text {
-    @apply bg-gradient-to-r from-drift-accent to-drift-accent-light bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-drift-accent to-drift-mc-green bg-clip-text text-transparent;
   }
   .text-gradient {
-    @apply bg-gradient-to-r from-drift-accent to-drift-accent-light bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-drift-accent to-drift-mc-green bg-clip-text text-transparent;
   }
   .glass {
-    @apply bg-drift-surface/80 backdrop-blur-md border border-drift-border;
+    @apply bg-drift-bg/90 backdrop-blur-md border-2 border-drift-border;
   }
   .card {
-    @apply bg-drift-surface border border-drift-border rounded-xl p-5 transition-colors duration-150;
+    @apply bg-drift-surface border-2 border-drift-border p-5 transition-colors duration-150;
+    border-radius: 4px;
   }
   .card-hover {
     @apply card hover:border-drift-border-light hover:bg-drift-surface-hover;
   }
   .badge {
-    @apply inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-drift-surface border border-drift-border text-xs font-mono text-drift-text-secondary;
+    @apply inline-flex items-center gap-2 px-2.5 py-1 bg-drift-surface border-2 border-drift-border text-xs font-mono text-drift-text-secondary;
+    border-radius: 4px;
   }
   .section-label {
-    @apply inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-drift-surface border border-drift-border mb-4 text-xs font-mono text-drift-text-secondary;
+    @apply inline-flex items-center gap-2 px-2.5 py-1 bg-drift-surface border-2 border-drift-border mb-4 text-xs font-mono text-drift-text-secondary;
+    border-radius: 4px;
   }
   .link-arrow {
     @apply inline-flex items-center gap-1 text-sm text-drift-accent transition-colors hover:text-drift-accent-light;
@@ -86,6 +91,24 @@
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  .font-pixel {
+    font-family: var(--font-pixel), monospace;
+  }
+  .pixel-shadow {
+    box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.4);
+  }
+  .pixel-shadow-sm {
+    box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.3);
+  }
+  .pixel-border {
+    border-style: solid;
+    border-width: 2px;
+    image-rendering: pixelated;
+  }
+  .pixelated {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
   }
   .animate-marquee {
     animation: marquee 30s linear infinite;

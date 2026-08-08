@@ -35,7 +35,7 @@ const communityLinks = [
 
 export function Community() {
   return (
-    <section id="community" className="pt-32 pb-24 min-h-screen">
+    <section id="community" className="py-24 border-t-2 border-drift-border relative">
       <div className="container-max">
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold animate-fade-in-up">
@@ -52,11 +52,11 @@ export function Community() {
             <a
               key={link.title}
               href={link.href}
-              className="card p-6 hover:border-drift-accent/50 transition-all duration-300 group flex items-start gap-4 animate-fade-in-up"
+              className="card p-6 hover:border-drift-mc-green/50 transition-all duration-300 group flex items-start gap-4 animate-fade-in-up"
               style={{ animationDelay: `${i * 0.08}s` }}
             >
-              <div className="w-12 h-12 rounded-xl bg-drift-accent/10 flex items-center justify-center flex-shrink-0 group-hover:bg-drift-accent/20 group-hover:scale-110 transition-all duration-300">
-                <link.icon size={24} className="text-drift-accent" />
+              <div className="w-12 h-12 bg-drift-mc-green/10 flex items-center justify-center flex-shrink-0 group-hover:bg-drift-mc-green/20 group-hover:scale-110 transition-all duration-300" style={{ borderRadius: '4px' }}>
+                <link.icon size={24} className="text-drift-mc-green" />
               </div>
               <div className="flex-1">
                 <h3 className="font-semibold text-lg mb-1">{link.title}</h3>

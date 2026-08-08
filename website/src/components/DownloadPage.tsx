@@ -80,8 +80,8 @@ function CopyButton({ text }: { text: string }) {
     setTimeout(() => setCopied(false), 2000);
   };
   return (
-    <button onClick={handleCopy} className="text-drift-muted hover:text-drift-accent transition-colors flex-shrink-0 p-1" aria-label="Copy">
-      {copied ? <Check size={14} className="text-drift-accent" /> : <Copy size={14} />}
+    <button onClick={handleCopy} className="text-drift-muted hover:text-drift-mc-green transition-colors flex-shrink-0 p-1" aria-label="Copy">
+      {copied ? <Check size={14} className="text-drift-mc-green" /> : <Copy size={14} />}
     </button>
   );
 }
@@ -128,7 +128,7 @@ export function DownloadPage() {
                 onClick={() => setActivePlatform(key)}
                 className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px ${
                   activePlatform === key
-                    ? "text-drift-accent border-drift-accent"
+                    ? "text-drift-mc-green border-drift-mc-green"
                     : "text-drift-muted border-transparent hover:text-drift-text"
                 }`}
               >
@@ -143,7 +143,7 @@ export function DownloadPage() {
         <div className="flex items-center justify-between mb-6">
           <span className="text-xs font-mono text-drift-muted">{p.arch}</span>
           <span className="badge">
-            <ShieldCheck size={12} className="text-drift-accent" />
+            <ShieldCheck size={12} className="text-drift-mc-green" />
             CI verified · {VERSION}
           </span>
         </div>
@@ -153,7 +153,7 @@ export function DownloadPage() {
           <h2 className="text-xs font-semibold text-drift-muted uppercase tracking-wider mb-2 font-mono">
             Quick Install
           </h2>
-          <div className="rounded-xl border border-drift-border bg-drift-bg-secondary overflow-hidden">
+          <div className="border-2 border-drift-border bg-drift-bg-secondary overflow-hidden" style={{ borderRadius: '4px' }}>
             <div className="flex items-center gap-3 px-4 py-3">
               <span className="text-xs text-drift-muted font-mono w-4 flex-shrink-0">$</span>
               <code className="text-sm font-mono break-all flex-1 text-drift-text-secondary">{p.quickInstall}</code>
@@ -173,21 +173,19 @@ export function DownloadPage() {
                 key={f.label}
                 href={f.url}
                 className={`card-hover flex items-center justify-between p-4 ${
-                  f.primary ? "border-drift-accent/40" : ""
+                  f.primary ? "border-drift-mc-green/40" : ""
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
-                    f.primary ? "bg-drift-accent/10" : "bg-drift-bg-secondary"
-                  }`}>
-                    <Download size={16} className={f.primary ? "text-drift-accent" : "text-drift-muted"} />
+                  <div className={`w-9 h-9 flex items-center justify-center`} style={{ borderRadius: '4px', background: f.primary ? 'rgba(91,186,58,0.1)' : undefined }}>
+                    <Download size={16} className={f.primary ? "text-drift-mc-green" : "text-drift-muted"} />
                   </div>
                   <div>
                     <p className="text-sm font-medium">{f.label}</p>
                     <p className="text-xs text-drift-muted font-mono">{f.size}</p>
                   </div>
                 </div>
-                <ShieldCheck size={14} className="text-drift-accent flex-shrink-0" />
+                <ShieldCheck size={14} className="text-drift-mc-green flex-shrink-0" />
               </a>
             ))}
           </div>

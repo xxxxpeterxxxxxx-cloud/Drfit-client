@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Press_Start_2P } from "next/font/google";
 import "./globals.css";
+import { AmbientBackground } from "@/components/AmbientBackground";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -12,6 +13,13 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains",
   display: "swap",
+});
+
+const pressStart2P = Press_Start_2P({
+  subsets: ["latin"],
+  variable: "--font-pixel",
+  display: "swap",
+  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -40,8 +48,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`dark ${inter.variable} ${jetbrainsMono.variable}`}>
-      <body className="font-sans antialiased">{children}</body>
+    <html lang="en" className={`dark ${inter.variable} ${jetbrainsMono.variable} ${pressStart2P.variable}`}>
+      <body className="font-sans antialiased">
+        <AmbientBackground />
+        <div className="relative z-10">{children}</div>
+      </body>
     </html>
   );
 }

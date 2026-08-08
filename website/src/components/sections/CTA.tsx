@@ -18,7 +18,7 @@ export function CTA() {
           Download Drift Client for free and discover features built around your playstyle.
         </p>
         <div className="mt-10 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
-          <Link href="/download" className="btn-primary text-base px-8 py-3">
+          <Link href="/download" className="btn-mc-green text-base px-8 py-3 pixel-shadow">
             <Download size={20} />
             Download for Free
           </Link>
